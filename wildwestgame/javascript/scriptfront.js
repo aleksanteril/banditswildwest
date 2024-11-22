@@ -3,7 +3,7 @@
 'use strict';
 
 const loadUserForm = document.querySelector('#usernameform')
-usernameForm.addEventListener('submit', async function(evt) {
+loadUserForm.addEventListener('submit', async function(evt) {
         evt.preventDefault();
         const username = document.querySelector('input').value;
         const response = await fetch(`http://127.0.0.1:3000/load/${username}`);
