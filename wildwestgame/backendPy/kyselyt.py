@@ -99,8 +99,8 @@ def update_suitcase_location(location):
     return sql_query_update_suitcase_location
 
 #Lisätään pelaajalle kilometrit, co2 määrä, travel count, location tietokantaan talteen
-def update_player_travel(kilometers, count, location):
-    sql_query_update_player_travel = (f"UPDATE game SET location = '{location}', total_kilometers = {kilometers}+total_kilometers, co2_consumed = {kilometers*8}+co2_consumed, travel_count = {count}+travel_count WHERE id = %s;")
+def save_player(kilometers, count, location, bandits_captured):
+    sql_query_update_player_travel = (f"UPDATE game SET location = '{location}', total_kilometers = {kilometers}+total_kilometers, travel_count = {count}+travel_count, bandits_captured = {bandits_captured}+bandits_captured WHERE id = %s;")
     return sql_query_update_player_travel
 
 #Kysely jolla päivitetään onko pelaaja avannut cluen
