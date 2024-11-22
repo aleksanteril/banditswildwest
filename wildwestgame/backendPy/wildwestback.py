@@ -19,10 +19,11 @@ class Player:
         self.travelCount = data[2]
         self.travelKm = data[3]
         self.banditsArrested = data[4]
+        self.banditLocation = data[5]
 
     #Tallentaa tämänhetkiset arvot tietokantaan
     def saveStats(self):
-        query = kyselyt.save_player(self.travelKm, self.travelCount, self.location, self.banditsArrested)
+        query = kyselyt.save_player(self.travelKm, self.travelCount, self.location, self.banditsArrested, self.banditLocation)
         database.update(query, (self.name,))
         return
 
@@ -45,6 +46,11 @@ def load(username):
     responseJson = json.dumps(response)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
+@app.route('/locations')
+def locations():
+    response = database.query(kyselyt.locations)
+    responseJson = json.dumps(response)
+    return Response(response=responseJson, status=200, mimetype="application/json")
 
 
 
@@ -58,6 +64,6 @@ def load(username):
 
 #Pelin logiikka pyörii täällä
 
-
+locations()
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000)

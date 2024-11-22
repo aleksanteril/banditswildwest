@@ -11,6 +11,8 @@ def country_hint(case_location):
 #Vakio kysely joka palauttaa maat, aakkosjärjestyksessä
 countries = f"SELECT name FROM country WHERE continent = 'EU' ORDER BY name;"
 
+locations = f"SELECT latitude_deg, longitude_deg, name FROM airport WHERE iso_region = 'US-CO'";
+
 
 #Kysely jolla saadaan parametri country avulla kyseisen maan lentokenttien ICAOT järjestyksessä large tyypistä alaspäin
 def country_airports(country):
@@ -99,8 +101,8 @@ def update_suitcase_location(location):
     return sql_query_update_suitcase_location
 
 #Lisätään pelaajalle kilometrit, co2 määrä, travel count, location tietokantaan talteen
-def save_player(kilometers, count, location, bandits_captured):
-    sql_query_update_player_travel = (f"UPDATE game SET location = '{location}', total_kilometers = {kilometers}+total_kilometers, travel_count = {count}+travel_count, bandits_captured = {bandits_captured}+bandits_captured WHERE id = %s;")
+def save_player(kilometers, count, location, bandits_captured, bandits_location):
+    sql_query_update_player_travel = (f"UPDATE game SET location = '{location}', total_kilometers = {kilometers}+total_kilometers, travel_count = {count}+travel_count, bandits_captured = {bandits_captured}+bandits_captured, bandits_location = {bandits_location} WHERE id = %s;")
     return sql_query_update_player_travel
 
 #Kysely jolla päivitetään onko pelaaja avannut cluen
