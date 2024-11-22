@@ -3,6 +3,7 @@ from flask_cors import CORS
 import json
 import database #Database yhteys import, ja kysely funktiot
 import kyselyt
+import random
 
 class Player:
     def __init__(self, id):
@@ -11,9 +12,9 @@ class Player:
             dataList = database.query(kyselyt.load_username(), (id,))
             data = dataList[0]
         else: #Jos käyttäjä ei olemassa asetetaan vakioarvot ja ladataan ne
-            database.update(kyselyt.new_username(), (id,))
-            dataList = database.query(kyselyt.load_username(), (id,))
-            data = dataList[0]
+            database.update(kyselyt.new_username(randomizeBandit()), (id,))
+            datalist = database.query(kyselyt.load_username(), (id,))
+            data = datalist[0]
         self.name = data[0]
         self.location = data[1]
         self.travelCount = data[2]
@@ -27,6 +28,17 @@ class Player:
         database.update(query, (self.name,))
         return
 
+    #Haetaan random paikka rosvolle
+    def randomizeBandit(self):
+        self.banditLocation = randomizeBandit()
+        return
+
+
+#Palauttaa random bandit location ICAO
+def randomizeBandit():
+    randomLocation = random.choice(database.query(kyselyt.locations))
+    return randomLocation[3] #3. indeksi on ICAO
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -37,11 +49,12 @@ def load(username):
     global player
     player = Player(username)
     response = {
-        "Name": player.name,
-        "Location": player.location,
-        "TravelKm": player.travelKm,
-        "TravelCount": player.travelCount,
-        "BanditsArrested": player.banditsArrested
+        "name": player.name,
+        "location": player.location,
+        "travelKm": player.travelKm,
+        "travelCount": player.travelCount,
+        "banditsArrested": player.banditsArrested,
+        "banditLocation": player.banditLocation
     }
     responseJson = json.dumps(response)
     return Response(response=responseJson, status=200, mimetype="application/json")
@@ -51,6 +64,12 @@ def locations():
     response = database.query(kyselyt.locations)
     responseJson = json.dumps(response)
     return Response(response=responseJson, status=200, mimetype="application/json")
+
+
+@app.route('/updatelocation/<icao>')
+def updateLocation(icao):
+    database.update(kyselyt.update_player_location(icao), (player.name,))
+    return Response(status=200)
 
 
 

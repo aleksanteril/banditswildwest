@@ -11,7 +11,7 @@ def country_hint(case_location):
 #Vakio kysely joka palauttaa maat, aakkosjärjestyksessä
 countries = f"SELECT name FROM country WHERE continent = 'EU' ORDER BY name;"
 
-locations = f"SELECT latitude_deg, longitude_deg, name FROM airport WHERE iso_region = 'US-CO'";
+locations = f"SELECT latitude_deg, longitude_deg, name, ident FROM airport WHERE (iso_region = 'US-CO' OR iso_region = 'US-UT') AND type = 'medium_airport';"
 
 
 #Kysely jolla saadaan parametri country avulla kyseisen maan lentokenttien ICAOT järjestyksessä large tyypistä alaspäin
@@ -59,8 +59,8 @@ def new_suitcase():
     return sql_query_new_suitcase
 
 #Kysely jolla päivitetään uusi käyttäjä tietokantaan ja asetetaan alkuarvot
-def new_username():
-    sql_query_new_username = (f"INSERT INTO game (id, location, co2_consumed, total_kilometers, clue_unlocked, travel_count, suitcases_found) VALUES (%s, 'EFHK', 0, 0, 0, 0, 0);")
+def new_username(banditLocation):
+    sql_query_new_username = (f"INSERT INTO game (id, location, total_kilometers, travel_count, banditLocation, banditsArrested) VALUES (%s, 'KAPA', 0, 0,'{banditLocation}', 0);")
     return sql_query_new_username
 
 
@@ -97,8 +97,12 @@ fetch_users = (f"SELECT id FROM game")
 #UPDATE KYSELYT #####################
 
 def update_suitcase_location(location):
-    sql_query_update_suitcase_location = (f"UPDATE suitcase SET location = ('{location}') WHERE id = %s;")
+    sql_query_update_suitcase_location = (f"UPDATE game SET location = ('{location}') WHERE id = %s;")
     return sql_query_update_suitcase_location
+
+def update_player_location(location):
+    sql_query_update_player_location = (f"UPDATE game SET location = ('{location}') WHERE id = %s;")
+    return sql_query_update_player_location
 
 #Lisätään pelaajalle kilometrit, co2 määrä, travel count, location tietokantaan talteen
 def save_player(kilometers, count, location, bandits_captured, bandits_location):
