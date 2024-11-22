@@ -1,4 +1,6 @@
-from flask import Flask
+from flask import Flask, Response
+from flask_cors import CORS
+import json
 import database #Database yhteys import, ja kysely funktiot
 import kyselyt
 
@@ -26,6 +28,8 @@ class Player:
 
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/load/<username>')
 def load(username):
@@ -36,10 +40,10 @@ def load(username):
         "Location": player.location,
         "TravelKm": player.travelKm,
         "TravelCount": player.travelCount,
-        "BanditsArrested": player.banditsArrested,
-        "status": 200
+        "BanditsArrested": player.banditsArrested
     }
-    return response
+    responseJson = json.dumps(response)
+    return Response(response=responseJson, status=200, mimetype="application/json")
 
 
 
