@@ -3,3 +3,11 @@
     height: 500px;
     width: 1000px;
 }
+
+header {
+    text-align: center;
+}
+
+#loginscreen {
+    text-align: center;
+}

@@ -4,33 +4,32 @@
     <meta charset="UTF-8">
     <title>Bandits in the Wild West</title>
     <link rel="stylesheet" href="../css/style.css">
-    <link href='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css' rel='stylesheet'/>
-    <script src='https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js'></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.20/leaflet-maplibre-gl.js"></script>
     <script src="../javascript/scriptfront.js" defer></script>
 </head>
 <body>
-<div id="container"></div>
-<header id="header">
-    <h1 id="title">Bandits in The Wild West</h1> <!--otsikko -->
-</header>
-<div id="loginscreen"> <!--create ja load näppäimet -->
-    <form action="" id="usernameform">
-        <input type="text" id="username">
-        <input type="submit" value="Play">
-    </form>
-    <p id="pelinohjeet">Bandits in The Wild West is an unforgiving tale of a Colorado Bounty Hunter. Try to hunt criminals and live long enough to tell the Tale!</p> <!--pelin ohjeet -->
-</div>
-<div id="gamescreen">
-    <audio src=""></audio>
-    <p id="nickname"></p>
-    <p id="location"></p>
-    <div id="map"></div>
+<div class="container">
+    <header>
+        <h1 id="title">Bandits in The Wild West</h1> <!--HEADER BAR -->
+    </header>
+    <div id="loginscreen"> <!--KIRJAUTUMIS ELEMENTIT -->
+        <form action="" id="usernameform">
+            <input type="text" id="username">
+            <input type="submit" value="Play">
+        </form>
+        <p id="pelinohjeet">Bandits in The Wild West is an unforgiving tale of a Colorado Bounty Hunter. Try to hunt
+            criminals and live long enough to tell the Tale!</p> <!--pelin ohjeet ja tarina -->
+    </div>
+    <div id="gamescreen">  <!--PELIN ELEMENTIT -->
+        <div id="eventpopup"></div>
+        <p id="nickname"></p>
+        <p id="location"></p>
+        <div id="map"></div>
+    </div>
 </div>
 </body>
 </html>
