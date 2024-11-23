@@ -1,12 +1,150 @@
-#title{ /*Otsikon muokkaus */
-    text-align:center;
-
+/*                   */
+/* Button Animation  */
+/*                   */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
-#createload{ /*create ja load näppäinten muokkaus */
-    text-align:center;
+@keyframes wobble {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-2deg);
+    }
+    75% {
+        transform: rotate(2deg);
+    }
 }
 
-#pelinohjeet{ /*pelin ohjeiden muokkaus */
-
+@font-face {
+    font-family: 'MaidenOrange-Regular';
+    src: url('/wildwestgame/MaidenOrange-Regular.ttf') format('truetype');
 }
+/*                   */
+/* Body and HTML     */
+/*                   */
+body, html {
+    font-family: 'MaidenOrange-Regular', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+/*                   */
+/* LOGINSCREEN STUFF */
+/*                   */
+#loginscreen {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('../images/banditslogo.webp') no-repeat center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#loginscreen form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#loginscreen #username {
+    padding: 0.15rem 0.4rem;
+    background-color: #ffd9b7;
+    color: #333;
+    border: 0.3125rem solid #b35e00;
+    border-radius: 0.625rem;
+    font-size: 1.5rem;
+    text-align: center;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    font-family: 'MaidenOrange-Regular', Arial, sans-serif;
+}
+
+#loginscreen #username::placeholder {
+    color: #999;
+}
+
+#loginscreen #playbutton {
+    padding: 1rem 4rem;
+    background-color: #cd7a27;
+    color: white;
+    border: 0.3125rem solid #b35e00;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 3.5rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 8.5rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    font-family: 'MaidenOrange-Regular', Arial, sans-serif;
+}
+
+#loginscreen #playbutton:hover {
+    background-color: #b35e00;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+#loginscreen #pelinohjeet-button {
+    background-color: #cd7a27;
+    color: white;
+    border: 0.3125rem solid #b35e00;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 1.8rem;
+    padding: 0.625rem 1.25rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 4.5rem;
+    right: 7rem;
+    animation: pulse 1.5s infinite;
+    font-family: 'MaidenOrange-Regular', Arial, sans-serif;
+}
+
+#loginscreen #pelinohjeet-button:hover {
+    background-color: #b35e00;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    animation: wobble 0.5s;
+}
+
+#loginscreen .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 9.5rem;
+    right: 2rem;
+    background-color: #ffd9b7;
+    border: 0.3125rem solid #b35e00;
+    border-radius: 0.625rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    width: 20rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    font-size: 2rem;
+}
+
+#loginscreen #pelinohjeet-dropdown p {
+    margin: 0.5rem;
+    padding: 0.625rem;
+}
+
+#loginscreen #pelinohjeet-button:active + .dropdown-content,
+.dropdown-content:hover {
+    display: block;
+}
+/*                   */
+/*  GAMEPLAY STUFF   */
+/*                   */

@@ -7,17 +7,22 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<div id="container"></div>
-<header id="header">
-    <h1 id="title">Bandits in the wild west</h1> <!--otsikko -->
-</header>
- <div id="createload"> <!--create ja load näppäimet -->
-     <form action="" id="usernameform">
-         <input type="submit" value="Play"><br>
-         <input type="text" id="username">
-     </form>
-     <p id="pelinohjeet">asda</p> <!--pelin ohjeet -->
- </div>
-
+<div id="container">
+    <header id="header"><!--otsikko -->
+    </header>
+    <div id="loginscreen"> <!--create ja load näppäimet -->
+        <form action="" id="usernameform">
+            <input type="text" id="username" placeholder="Enter a Username">
+            <input id="playbutton" type="submit" value="PLAY">
+        </form>
+        <button id="pelinohjeet-button">How to Play</button> <!-- pelin ohjeet button -->
+        <div id="pelinohjeet-dropdown" class="dropdown-content">
+            <p>#1: Create a user or load an existing one. <br>#2: play the game.
+                <br>#3: HAVE FUN! <br>#4: Hunt bandits! <br>#5: Get goth chicks! <br> #6 HOJA SOS TI BLYAT!
+                <br> #7 HOJA SOS TI BLYAT!<br> #8 HOJA SOS TI BLYAT!<br> #9 HOJA SOS TI BLYAT!<br> #10 HOJA SOS TI BLYAT!
+            </p>
+        </div>
+    </div>
+</div>
 </body>
 </html>

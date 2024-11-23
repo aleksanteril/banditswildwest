@@ -10,3 +10,13 @@ loadUserForm.addEventListener('submit', async function(evt) {
         const jsonData = await response.json();
         console.log(jsonData)
 });
+
+/* JS SCRIPTI BUTTONEILLE */
+document.querySelector('#pelinohjeet-button').addEventListener('click', function() {
+    let dropdown = document.querySelector('#pelinohjeet-dropdown');
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'block';
+    } else {
+        dropdown.style.display = 'none';
+    }
+})
