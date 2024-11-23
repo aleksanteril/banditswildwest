@@ -1,12 +1,13 @@
-#title{ /*Otsikon muokkaus */
-    text-align:center;
 
+#map{
+    height: 500px;
+    width: 1000px;
 }
 
-#createload{ /*create ja load näppäinten muokkaus */
-    text-align:center;
+header {
+    text-align: center;
 }
 
-#pelinohjeet{ /*pelin ohjeiden muokkaus */
-
+#loginscreen {
+    text-align: center;
 }
