@@ -100,13 +100,25 @@ def update_bandit_location(location):
     sql_query_update_bandit_location = (f"UPDATE game SET bandit_location = ('{location}') WHERE id = %s;")
     return sql_query_update_bandit_location
 
+def update_bandits_arrested():
+    sql_query_update_bandit_arrested = (f"UPDATE game SET bandits_captured = 1+bandits_captured WHERE id = %s;")
+    return sql_query_update_bandit_arrested
+
+def update_player_travel_counter():
+    sql_query_update_player_travel = (f"UPDATE game SET travel_count = 1+travel_count WHERE id = %s;")
+    return sql_query_update_player_travel
+
+def update_player_travel_kilometers(km):
+    sql_query_update_player_travel = (f"UPDATE game SET total_kilometers = {km}+total_kilometers WHERE id = %s;")
+    return sql_query_update_player_travel
+
 def update_player_location(location):
     sql_query_update_player_location = (f"UPDATE game SET location = ('{location}') WHERE id = %s;")
     return sql_query_update_player_location
 
 #Lisätään pelaajalle kilometrit, co2 määrä, travel count, location tietokantaan talteen
 def save_player(kilometers, count, location, bandits_captured, bandits_location):
-    sql_query_update_player_travel = (f"UPDATE game SET location = '{location}', total_kilometers = {kilometers}+total_kilometers, travel_count = {count}+travel_count, bandits_captured = {bandits_captured}+bandits_captured, bandits_location = {bandits_location} WHERE id = %s;")
+    sql_query_update_player_travel = (f"UPDATE game SET location = '{location}', total_kilometers = {kilometers}+total_kilometers, travel_count = {count}+travel_count, bandits_captured = {bandits_captured}+bandits_captured, bandit_location = '{bandits_location}' WHERE id = %s;")
     return sql_query_update_player_travel
 
 #Kysely jolla päivitetään onko pelaaja avannut cluen
