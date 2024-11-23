@@ -39,7 +39,6 @@ function markerCLick(town) {
 async function getLocations() {
     const response = await fetch(`http://127.0.0.1:3000/locations`);
     const locationData = await response.json();
-    console.log(locationData);
     for (let town of locationData) {
         if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
             map.setView([town[0], town[1]], 8);

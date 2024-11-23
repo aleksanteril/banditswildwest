@@ -7,7 +7,7 @@ while not connection:
         yhteys = mysql.connector.connect(
                 host='127.0.0.1',
                 port=3306,
-                database="waldo_game", #input("Database: "),
+                database="wildwest_game", #input("Database: "),
                 user="aleksanteri", #input("User: "),
                 password="m4ks4", #input("Password: "),
                 autocommit=True
