@@ -17,8 +17,8 @@ class Player:
             data = datalist[0]
         self.name = data[0]
         self.location = data[1]
-        self.travelCount = data[2]
-        self.travelKm = data[3]
+        self.travelKm = data[2]
+        self.travelCount = data[3]
         self.banditsArrested = data[4]
         self.banditLocation = data[5]
 
@@ -66,9 +66,10 @@ def locations():
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 
-@app.route('/updatelocation/<icao>')
-def updateLocation(icao):
+@app.route('/playermove/<icao>')
+def playerMove(icao):
     database.update(kyselyt.update_player_location(icao), (player.name,))
+    player.travelCount += 1
     return Response(status=200)
 
 
