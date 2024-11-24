@@ -19,10 +19,11 @@
         <form action="" id="usernameform">
             <label for="username"></label>
             <input type="text" id="username" placeholder="Enter a Username">
-            <input id="playbutton" type="submit" value="PLAY">
+            <input id="playbutton" type="submit" value="PLAY" class="bcontent">
         </form>
-        <button id="pelinohjeet-button">How to Play</button> <!-- pelin ohjeet button -->
+        <button id="pelinohjeet-button" class="bcontent">How to Play</button> <!-- pelin ohjeet button -->
         <div id="pelinohjeet-dropdown" class="dropdown-content">
+            <p>#1: Create a user or load an existing one.</p>
             <p>#1: Create a user or load an existing one.</p>
             <p>#1: Create a user or load an existing one.</p>
             <p>#1: Create a user or load an existing one.</p>
@@ -30,15 +31,26 @@
         </div>
     </div>
     <div id="gamescreen">  <!--gamescreen -->
-        <div id="eventpopup"></div>
-        <div id="statusfield" class="pcontent">
-            <p id="nickname"></p>
-            <p id="location"></p>
-            <p id="travelmiles"></p>
-            <p id="banditscaptured"></p>
-            <p id="currency"></p>
+        <div id="top">
+            <div id="statusfield" class="content">
+                <p id="nickname"></p>
+                <p id="location"></p>
+                <p id="travelmiles"></p>
+                <p id="banditscaptured"></p>
+                <p id="currency"></p>
+            </div>
+            <div id="map" class="content"></div>
         </div>
-        <div id="map"></div>
+        <div id="bot">
+            <div id="terminal" class="content">
+                <p>First Line of text: ASDASDASDASDASDASD</p>
+                <p>Second Line of text: ASDASDASDASDASDASD</p>
+                <p>Third Line of text: ASDASDASDASDASDASD</p>
+                <p>Fourth Line of text: ASDASDASDASDASDASD</p>
+                <p>Fifth Line of text: ASDASDASDASDASDASD</p>
+            </div>
+        </div>
+        <div id="eventpopup"></div>
     </div>
 </div>
 </body>
