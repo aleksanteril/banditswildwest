@@ -28,6 +28,12 @@ let playerTravelMiles;
 let playerBanditsCaptured;
 
 
+async function getWeather() {
+    const response = await fetch(`http://127.0.0.1:3000/findweather/${playerLocation}`);
+    const data = await response.json();
+    console.log(data);
+}
+
 
 function gameScreenText() {
     gameScreenNickname.innerHTML = `Playing as: ${playerName}`;
@@ -51,15 +57,13 @@ async function markerCLick(town) {
         if (jsonData.arrest) {
             alert("You found a bandit!")
         }
-        getStats(); //Päivitetään statsit ruudulle
-
+        getStats(); //Päivitetään statsit ja sää ruudulle
     }
 }
 
 async function getLocations() {
     const response = await fetch(`http://127.0.0.1:3000/locations`);
     const locationData = await response.json();
-    console.log(locationData);
     for (let town of locationData) {
         if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
             map.setView([town[0], town[1]], 10);
@@ -78,6 +82,7 @@ async function getStats() {
     playerBanditsCaptured = jsonData.banditsArrested
     playerTravelMiles = jsonData.travelKm * 0.62
     gameScreenText();
+    getWeather()
 }
 
 
@@ -88,7 +93,6 @@ loadUserForm.addEventListener('submit', async function(evt) {
     const username = document.querySelector('#username').value;
     const response = await fetch(`http://127.0.0.1:3000/play/${username}`);
     const jsonData = await response.json(); //Haetaan pelaajan tiedot databasesta
-    console.log(jsonData);
     playerLocation = jsonData.location;
     playerName = jsonData.name;
     getLocations(); //Ladataan pelin kartta tilanne
