@@ -4,6 +4,7 @@ import json
 import database #Database yhteys import, ja kysely funktiot
 import kyselyt
 import random
+import requests
 
 class Player:
     def __init__(self, id):
@@ -21,6 +22,8 @@ class Player:
         self.travelCount = data[3]
         self.banditsArrested = data[4]
         self.banditLocation = data[5]
+        self.money = data[6]
+        self.dayCount = data[7]
 
     #Statsien haku database
     def getStats(self):
@@ -35,7 +38,9 @@ class Player:
             "travelKm": self.travelKm,
             "travelCount": self.travelCount,
             "banditsArrested": self.banditsArrested,
-            "banditLocation": self.banditLocation
+            "banditLocation": self.banditLocation,
+            "money": self.money,
+            "dayCount": self.dayCount
         }
         return json.dumps(response)
 
@@ -54,6 +59,17 @@ class Player:
         database.update(query, (self.name,))
         return
 
+    def updateDayCount(self):
+        self.dayCount += 1
+        query = kyselyt.update_player_day_count()
+        database.update(query, (self.name,))
+        return
+
+    def updateMoney(self, money):
+        self.money += money
+        query = kyselyt.update_player_money(money)
+        database.update(query, (self.name,))
+        return
 
     def updateTravelKilometers(self, km):
         self.travelKm += km
@@ -83,9 +99,22 @@ def kilometersBetween(icao1, icao2):
     return kilometersRounded
 
 
+
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+@app.route('/findweather/<icao>')
+def findweather(icao):
+    print(icao)
+    query = kyselyt.coordinates_icao(icao)
+    coordinatesTuple = database.query_fetchone(query)
+    response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={coordinatesTuple[0]}&longitude={coordinatesTuple[1]}&current=temperature,is_day,weather_code")
+    currentWeather = response.json()['current']
+    responseJson = json.dumps(currentWeather)
+    return Response(response=responseJson, status=200, mimetype="application/json")
+
 
 @app.route('/play/<username>')
 def play(username):
@@ -126,8 +155,5 @@ def playerMove(icao):
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 
-
-
-locations()
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=3000)
