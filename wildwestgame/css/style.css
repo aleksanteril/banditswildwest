@@ -73,12 +73,16 @@ body, html {
     font-family: 'MaidenOrange-Regular', Arial, sans-serif;
 }
 
+#loginscreen #username:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
 #loginscreen #username::placeholder {
     color: #999;
 }
 
 #loginscreen #playbutton {
-    padding: 1rem 4rem;
+    padding: 1rem 5.2rem;
     background-color: #cd7a27;
     color: white;
     border: 0.3125rem solid #b35e00;
@@ -129,7 +133,7 @@ body, html {
     background-color: #ffd9b7;
     border: 0.3125rem solid #b35e00;
     border-radius: 0.625rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
     width: 20rem;
     max-height: calc(100vh - 7rem);
     overflow-y: auto;
@@ -149,7 +153,46 @@ body, html {
 /*  GAMEPLAY STUFF   */
 /*                   */
 
+#gamescreen {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('../images/gameplaybackground2.webp') no-repeat center;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
+
+#statusfield {
+    background-color: #ffd9b7;
+    border: 0.3125rem solid #b35e00;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.625rem;
+    color: black;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#statusfield:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+#statusfield p {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
 #map{
-    height: 500px;
-    width: 1000px;
+    height: 31rem;
+    width: 45%;
+    border: 0.3125rem solid #b35e00;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+#map:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
