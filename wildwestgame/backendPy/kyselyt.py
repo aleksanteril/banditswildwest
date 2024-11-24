@@ -14,6 +14,10 @@ countries = f"SELECT name FROM country WHERE continent = 'EU' ORDER BY name;"
 locations = f"SELECT latitude_deg, longitude_deg, name, ident FROM airport WHERE (iso_region = 'US-CO' OR iso_region = 'US-UT') AND type = 'medium_airport';"
 
 
+def coordinates_icao(icao):
+    sql_query_coordinates = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident = '{icao}';"
+    return sql_query_coordinates
+
 #Kysely jolla saadaan parametri country avulla kyseisen maan lentokenttien ICAOT järjestyksessä large tyypistä alaspäin
 #def country_airports(country):
 #    sql_query_airports = (f"SELECT ident FROM airport, country "
@@ -46,7 +50,7 @@ def distance_between_locations(icao1, icao2):
 
 #Kysely jolla kysytään käyttäjän arvot
 def load_username():
-    sql_query_load_username = (f"SELECT id, location, total_kilometers, travel_count, bandits_captured, bandit_location "
+    sql_query_load_username = (f"SELECT id, location, total_kilometers, travel_count, bandits_captured, bandit_location, money, day_count "
                                f"FROM game WHERE id = %s;")
     return sql_query_load_username
 
@@ -60,7 +64,7 @@ def load_username():
 
 #Kysely jolla päivitetään uusi käyttäjä tietokantaan ja asetetaan alkuarvot
 def new_username(banditLocation):
-    sql_query_new_username = (f"INSERT INTO game (id, location, total_kilometers, travel_count, bandits_captured, bandit_location) VALUES (%s, 'KAPA', 0, 0, 0,'{banditLocation}');")
+    sql_query_new_username = (f"INSERT INTO game (id, location, total_kilometers, travel_count, bandits_captured, bandit_location, money, day_count) VALUES (%s, 'KAPA', 0, 0, 0,'{banditLocation}', 0, 0);")
     return sql_query_new_username
 
 
@@ -107,6 +111,14 @@ def update_bandits_arrested():
 def update_player_travel_counter():
     sql_query_update_player_travel = (f"UPDATE game SET travel_count = 1+travel_count WHERE id = %s;")
     return sql_query_update_player_travel
+
+def update_player_day_count():
+    sql_query_update_player_day = (f"UPDATE game SET day_count = 1+day_count WHERE id = %s;")
+    return sql_query_update_player_day
+
+def update_player_money(money):
+    sql_query_update_player_money = (f"UPDATE game SET money = {money}+money WHERE id = %s;")
+    return sql_query_update_player_money
 
 def update_player_travel_kilometers(km):
     sql_query_update_player_travel = (f"UPDATE game SET total_kilometers = {km}+total_kilometers WHERE id = %s;")
