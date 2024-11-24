@@ -42,7 +42,7 @@ function gameScreenText() {
     gameScreenLocation.innerHTML = `Current location: ${playerLocationName}`;
     gameScreenTravel.innerHTML = `Miles traveled: ${playerTravelMiles.toFixed(0)}`;
     gameScreenBanditsCaptured.innerHTML = `Bandits captured: ${playerBanditsCaptured}`;
-    gameScreenCurrency.innerHTML = `Currency: ${playerCurrency}`;
+    gameScreenCurrency.innerHTML = `Dollars: ${playerCurrency} $`;
 }
 
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään sijainti
