@@ -22,14 +22,25 @@ class Player:
         self.banditsArrested = data[4]
         self.banditLocation = data[5]
 
-
+    #Statsien haku database
     def getStats(self):
         dataList = database.query(kyselyt.load_username(), (self.name,))
         data = dataList[0]
         return data
 
+    def getStatsJson(self):
+        response = {
+            "name": self.name,
+            "location": self.location,
+            "travelKm": self.travelKm,
+            "travelCount": self.travelCount,
+            "banditsArrested": self.banditsArrested,
+            "banditLocation": self.banditLocation
+        }
+        return json.dumps(response)
 
     def updateBanditsArrested(self):
+        self.banditsArrested += 1
         query = kyselyt.update_bandits_arrested()
         database.update(query, (self.name,))
         self.banditLocation = randomizeBandit()
@@ -38,12 +49,14 @@ class Player:
 
 
     def updateTravelCounter(self):
+        self.travelCount += 1
         query = kyselyt.update_player_travel_counter()
         database.update(query, (self.name,))
         return
 
 
     def updateTravelKilometers(self, km):
+        self.travelKm += km
         query = kyselyt.update_player_travel_kilometers(km)
         database.update(query, (self.name,))
         return
@@ -78,15 +91,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def play(username):
     global player
     player = Player(username)
-    response = {
-        "name": player.name,
-        "location": player.location,
-        "travelKm": player.travelKm,
-        "travelCount": player.travelCount,
-        "banditsArrested": player.banditsArrested,
-        "banditLocation": player.banditLocation
-    }
-    responseJson = json.dumps(response)
+    responseJson = player.getStatsJson()
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 @app.route('/locations')
@@ -96,54 +101,32 @@ def locations():
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 @app.route('/getstats')
-def load():
-    data = player.getStats()
-    print(data[4])
-    response = {
-        "name": data[0],
-        "location": data[1],
-        "travelKm": data[2],
-        "travelCount": data[3],
-        "banditsArrested": data[4],
-        "banditLocation": data[5]
-    }
-    responseJson = json.dumps(response)
+def getstats():
+    responseJson = player.getStatsJson()
+    print(player.location, player.travelKm, player.travelCount, player.banditLocation, player.banditsArrested)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 
 @app.route('/playermove/<icao>')
 def playerMove(icao):
-    player.travelKm = kilometersBetween(player.location, icao) #Lasketaan km paikkojen välil
+    kilometers = kilometersBetween(player.location, icao) #Lasketaan km paikkojen välil
     player.updatePlayerLocation(icao) #Päivitetaan sijainti tietokantaan
-    player.updateTravelKilometers(player.travelKm) #Päivitetään km tietokantaan
+    player.updateTravelKilometers(kilometers) #Päivitetään km tietokantaan
     player.updateTravelCounter() #Lasketaan 1 travel counteriin
     if player.location == player.banditLocation:  #Palautetaan true ja uusi location jos bandit löytyi
         player.updateBanditsArrested()
         response = {
-            "arrest": True,
-            "banditLocation": player.banditLocation
+            "arrest": True
         }
     else:                                         #Muuten palautetaan false
         response = {
             "arrest": False
         }
-    #player.saveStats()  #Tallennetaan muutokset
     responseJson = json.dumps(response)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 
 
-
-
-#@app.route('/save/<command>')
-#def menu(command):
-
-
-#@app.route('/save')
-#def save():
-    #player.saveStats()
-
-#Pelin logiikka pyörii täällä
 
 locations()
 if __name__ == '__main__':
