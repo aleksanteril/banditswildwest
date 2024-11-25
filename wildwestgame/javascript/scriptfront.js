@@ -16,9 +16,11 @@ const gameScreenNickname = document.querySelector('#nickname');
 const gameScreenLocation = document.querySelector('#location');
 const gameScreenTravel = document.querySelector('#travelmiles');
 const gameScreenCurrency = document.querySelector('#currency');
+const gameScreenDayCount = document.querySelector('#daycount');
 const gameScreenBanditsCaptured = document.querySelector('#banditscaptured');
 const gameHelpButton = document.querySelector('#pelinohjeet-button');
 const dropdown = document.querySelector('#pelinohjeet-dropdown');
+const gameContainer = document.querySelector('#container');
 gameScreen.style.display = 'none';
 
 //Globaalit arvot
@@ -28,6 +30,7 @@ let playerLocationName;
 let playerTravelMiles;
 let playerBanditsCaptured;
 let playerCurrency;
+let playerDayCount;
 
 
 async function getWeather() {
@@ -42,7 +45,8 @@ function gameScreenText() {
     gameScreenLocation.innerHTML = `Current location: ${playerLocationName}`;
     gameScreenTravel.innerHTML = `Miles traveled: ${playerTravelMiles.toFixed(0)}`;
     gameScreenBanditsCaptured.innerHTML = `Bandits captured: ${playerBanditsCaptured}`;
-    gameScreenCurrency.innerHTML = `Dollars: ${playerCurrency} $`;
+    gameScreenCurrency.innerHTML = `Dollars: $${playerCurrency}`;
+    gameScreenDayCount.innerHTML = `Days survived: ${playerDayCount}`;
 }
 
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään sijainti
@@ -85,6 +89,7 @@ async function getStats() {
     playerBanditsCaptured = jsonData.banditsArrested
     playerTravelMiles = jsonData.travelKm * 0.62
     playerCurrency = jsonData.money
+    playerDayCount = jsonData.dayCount
     gameScreenText();
     getWeather()
 }
@@ -101,6 +106,7 @@ loadUserForm.addEventListener('submit', async function(evt) {
     playerName = jsonData.name;
     getLocations(); //Ladataan pelin kartta tilanne
     gameScreen.style.display = 'flex';
+    gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
 });
 
 
