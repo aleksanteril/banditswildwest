@@ -21,6 +21,10 @@ const gameScreenBanditsCaptured = document.querySelector('#banditscaptured');
 const gameHelpButton = document.querySelector('#pelinohjeet-button');
 const dropdown = document.querySelector('#pelinohjeet-dropdown');
 const gameContainer = document.querySelector('#container');
+const popupImgElement = document.querySelector('#popupimg');
+const popupParaElement = document.querySelector('#popuppara');
+const eventPopupElement = document.querySelector('#eventpopup');
+const eventPopupClose = document.querySelector('#eventclose');
 gameScreen.style.display = 'none';
 
 //Globaalit arvot
@@ -37,6 +41,13 @@ async function getWeather() {
     const response = await fetch(`http://127.0.0.1:3000/findweather/${playerLocation}`);
     const data = await response.json();
     console.log(data);
+}
+
+
+function eventPopupOpen(image, text) {
+    popupImgElement.src = image;
+    popupParaElement.innerHTML = text;
+    eventPopupElement.style.display = 'flex';
 }
 
 
@@ -63,6 +74,7 @@ async function markerCLick(town) {
         console.log(jsonData);
         if (jsonData.arrest) {
             alert("You found a bandit!")
+            eventPopupOpen('../images/bandit2.webp', 'You found the man! After some fighting you manage to catch him')
         }
         getStats(); //Päivitetään statsit ja sää ruudulle
     }
@@ -118,4 +130,8 @@ gameHelpButton.addEventListener('click', function() {
         dropdown.style.display = 'none';
     }
 })
+
+//Event popup sulkemis nappi
+eventPopupClose.addEventListener('click', () => eventPopupElement.style.display = 'none' );
+
 

@@ -27,7 +27,7 @@
 
 @font-face {
     font-family: 'MaidenOrange-Regular';
-    src: url('/wildwestgame/MaidenOrange-Regular.ttf') format('truetype');
+    src: url('MaidenOrange-Regular.ttf') format('truetype');
 }
 /*                   */
 /* Body and HTML     */
