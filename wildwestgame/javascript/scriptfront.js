@@ -15,9 +15,12 @@ const loginScreen = document.querySelector('#loginscreen');
 const gameScreenNickname = document.querySelector('#nickname');
 const gameScreenLocation = document.querySelector('#location');
 const gameScreenTravel = document.querySelector('#travelmiles');
+const gameScreenCurrency = document.querySelector('#currency');
+const gameScreenDayCount = document.querySelector('#daycount');
 const gameScreenBanditsCaptured = document.querySelector('#banditscaptured');
 const gameHelpButton = document.querySelector('#pelinohjeet-button');
 const dropdown = document.querySelector('#pelinohjeet-dropdown');
+const gameContainer = document.querySelector('#container');
 gameScreen.style.display = 'none';
 
 //Globaalit arvot
@@ -26,6 +29,8 @@ let playerName;
 let playerLocationName;
 let playerTravelMiles;
 let playerBanditsCaptured;
+let playerCurrency;
+let playerDayCount;
 
 
 async function getWeather() {
@@ -38,8 +43,10 @@ async function getWeather() {
 function gameScreenText() {
     gameScreenNickname.innerHTML = `Playing as: ${playerName}`;
     gameScreenLocation.innerHTML = `Current location: ${playerLocationName}`;
-    gameScreenTravel.innerHTML = `Travel miles: ${playerTravelMiles.toFixed(0)}`;
+    gameScreenTravel.innerHTML = `Miles traveled: ${playerTravelMiles.toFixed(0)}`;
     gameScreenBanditsCaptured.innerHTML = `Bandits captured: ${playerBanditsCaptured}`;
+    gameScreenCurrency.innerHTML = `Dollars: $${playerCurrency}`;
+    gameScreenDayCount.innerHTML = `Days survived: ${playerDayCount}`;
 }
 
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään sijainti
@@ -81,6 +88,8 @@ async function getStats() {
     playerLocation = jsonData.location;
     playerBanditsCaptured = jsonData.banditsArrested
     playerTravelMiles = jsonData.travelKm * 0.62
+    playerCurrency = jsonData.money
+    playerDayCount = jsonData.dayCount
     gameScreenText();
     getWeather()
 }
@@ -96,7 +105,8 @@ loadUserForm.addEventListener('submit', async function(evt) {
     playerLocation = jsonData.location;
     playerName = jsonData.name;
     getLocations(); //Ladataan pelin kartta tilanne
-    gameScreen.style.display = 'block';
+    gameScreen.style.display = 'flex';
+    gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
 });
 
 
