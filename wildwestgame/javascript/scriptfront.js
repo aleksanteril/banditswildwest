@@ -24,8 +24,6 @@ const popupImgElement = document.querySelector('#popupimg');
 const popupParaElement = document.querySelector('#popuppara');
 const eventPopupElement = document.querySelector('#eventpopup');
 const eventPopupClose = document.querySelector('#eventclose');
-gameScreen.style.display = 'none';
-//eventPopupElement.style.display = 'none';
 
 //Globaalit arvot
 let playerLocation;
@@ -38,19 +36,18 @@ let playerDayCount;
 
 //Sään haku background kuvaa varten
 async function getWeather() {
-    const response = await fetch(`http://127.0.0.1:3000/findweather/${playerLocation}`);
+    const response = await fetch(
+        `http://127.0.0.1:3000/findweather/${playerLocation}`);
     const data = await response.json();
     if (data.weather_code > 50) {
         console.log('Weather 1');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`
-    }
-    else if (data.weather_code > 1) {
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`;
+    } else if (data.weather_code > 1) {
         console.log('Weather 2');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground3.webp')`
-    }
-    else {
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground3.webp')`;
+    } else {
         console.log('Weather 3');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
     }
 }
 
@@ -65,7 +62,8 @@ function eventPopupOpen(image, text) {
 function gameScreenText() {
     gameScreenNickname.innerHTML = `Playing as: ${playerName}`;
     gameScreenLocation.innerHTML = `Current location: ${playerLocationName}`;
-    gameScreenTravel.innerHTML = `Miles traveled: ${playerTravelMiles.toFixed(0)}`;
+    gameScreenTravel.innerHTML = `Miles traveled: ${playerTravelMiles.toFixed(
+        0)}`;
     gameScreenBanditsCaptured.innerHTML = `Bandits captured: ${playerBanditsCaptured}`;
     gameScreenCurrency.innerHTML = `Dollars: $${playerCurrency}`;
     gameScreenDayCount.innerHTML = `Days survived: ${playerDayCount}`;
@@ -77,16 +75,17 @@ async function markerCLick(town) {
     if (playerLocation !== town[3]) {
         bool = confirm(`Do you wish to travel to ${town[2]}?`);
     }
-    if (!bool) return //Jos pelaaja palauttaa false confirm, palataan pois
+    if (!bool) return; //Jos pelaaja palauttaa false confirm, palataan pois
     playerLocationName = town[2];
     map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
     const response = await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
     const jsonData = await response.json();
     await getStats(); //Päivitetään statsit ja sää ruudulle
-    await getWeather()
-    if (!jsonData.arrest) return //Jos ei arrestia palataan tässä kohtaa pois
-    alert("You found a bandit!")
-    //eventPopupOpen('../images/bandit2.webp', 'You found the man! After some fighting you manage to catch him')
+    await getWeather();
+    if (!jsonData.arrest) return; //Jos ei arrestia palataan tässä kohtaa pois
+    //alert("You found a bandit!")
+    eventPopupOpen('../images/bandit2.webp',
+        'You finally track down the bandit, the tension thick as you face off. Weapons flash, the fight is intense but short. With skill and determination, you overpower them, securing your victory. Bound and defeated, the bandit has no choice but to come with you as you make your way back to claim justice.');
 }
 
 //Pelin paikkojen haku ja kartta markkerien luonti
@@ -97,7 +96,9 @@ async function getLocations() {
         if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
             map.setView([town[0], town[1]], 10);
         }
-        L.marker([town[0], town[1]]).addTo(map).on('click', () => markerCLick(town)); //Luodaan karttaan klikattavat markkerit
+        L.marker([town[0], town[1]]).
+            addTo(map).
+            on('click', () => markerCLick(town)); //Luodaan karttaan klikattavat markkerit
     }
 }
 
@@ -107,13 +108,12 @@ async function getStats() {
     const jsonData = await response.json();
     console.log(jsonData);
     playerLocation = jsonData.location;
-    playerBanditsCaptured = jsonData.banditsArrested
-    playerTravelMiles = jsonData.travelKm * 0.62
-    playerCurrency = jsonData.money
-    playerDayCount = jsonData.dayCount
+    playerBanditsCaptured = jsonData.banditsArrested;
+    playerTravelMiles = jsonData.travelKm * 0.62;
+    playerCurrency = jsonData.money;
+    playerDayCount = jsonData.dayCount;
     gameScreenText();
 }
-
 
 //Pelin lataus, pelaaja syöttää usernamen, backend lataa tai luo uuden
 loadUserForm.addEventListener('submit', async function(evt) {
@@ -124,13 +124,12 @@ loadUserForm.addEventListener('submit', async function(evt) {
     const jsonData = await response.json(); //Haetaan pelaajan tiedot databasesta, tai luodaan uusi
     playerLocation = jsonData.location;
     playerName = jsonData.name;
-    playerLocationName = jsonData.location
-    await getWeather() //Haetaan sää pelin alustusta varten
+    playerLocationName = jsonData.location;
+    await getWeather(); //Haetaan sää pelin alustusta varten
     getLocations(); //Ladataan pelin kartta ja markkerit
-    await getStats() //Haetaan statsit ja asetetaan ne näkyviin
+    await getStats(); //Haetaan statsit ja asetetaan ne näkyviin
     gameScreen.style.display = 'flex'; //Gamescreen element näkyviin
 });
-
 
 /* JS SCRIPTI BUTTONEILLE */
 gameHelpButton.addEventListener('click', function() {
@@ -139,9 +138,10 @@ gameHelpButton.addEventListener('click', function() {
     } else {
         dropdown.style.display = 'none';
     }
-})
+});
 
 //Event popup sulkemis nappi
-eventPopupClose.addEventListener('click', () => eventPopupElement.style.display = 'none' );
+eventPopupClose.addEventListener('click',
+    () => eventPopupElement.style.display = 'none');
 
 
