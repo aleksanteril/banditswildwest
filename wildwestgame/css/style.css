@@ -27,7 +27,7 @@
 
 @font-face {
     font-family: 'MaidenOrange-Regular';
-    src: url('/wildwestgame/MaidenOrange-Regular.ttf') format('truetype');
+    src: url('MaidenOrange-Regular.ttf') format('truetype');
 }
 /*                   */
 /* Body and HTML     */
@@ -168,10 +168,11 @@ body, html {
 #gamescreen {
     width: 100%;
     height: 100vh;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 1.3rem;
 }
 
 #gamescreen>img {
@@ -184,9 +185,27 @@ body, html {
 
 #eventpopup {
     position: fixed;
-    width: 10%;
-    height: 10%;
-    z-index: 20;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #000000bd;
+}
+
+#eventpopup>img {
+    margin-top: 1rem;
+    width: 20%;
+    height: auto;
+    align-self: center;
+}
+
+
+#eventpopup p {
+    align-self: center;
+    width: 50%;
+    padding: 1rem;
 }
 
 #top {
@@ -200,7 +219,7 @@ body, html {
     width: 50%;
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
+    margin: 1rem 0 1rem 0;
 }
 
 #statusfield {
@@ -212,7 +231,6 @@ body, html {
 
 #statusfield p {
     margin: 0.5rem 0;
-    font-size: 1.2rem;
 }
 
 #map{
@@ -224,11 +242,18 @@ body, html {
 #terminal {
     width: 100%;
     height: 10rem;
+    display: flex;
+    flex-direction: column;
 }
 
 #terminal p {
-    margin: 0.7rem 0;
-    font-size: 1rem;
+    margin: 0.5rem;
     padding-left: 0.5rem;
+}
+
+#eventpopup button {
+    width: 20%;
+    height: 3rem;
+    align-self: center;
 }
 

@@ -107,7 +107,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/findweather/<icao>')
 def findweather(icao):
-    print(icao)
     query = kyselyt.coordinates_icao(icao)
     coordinatesTuple = database.query_fetchone(query)
     response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={coordinatesTuple[0]}&longitude={coordinatesTuple[1]}&current=temperature,is_day,weather_code")
