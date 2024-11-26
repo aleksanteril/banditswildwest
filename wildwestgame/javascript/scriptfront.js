@@ -1,7 +1,6 @@
 'use strict';
 
 //Kartan luonti
-const denver = [40, -105];
 const map = L.map('map');
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -26,6 +25,7 @@ const popupParaElement = document.querySelector('#popuppara');
 const eventPopupElement = document.querySelector('#eventpopup');
 const eventPopupClose = document.querySelector('#eventclose');
 gameScreen.style.display = 'none';
+//eventPopupElement.style.display = 'none';
 
 //Globaalit arvot
 let playerLocation;
@@ -40,7 +40,18 @@ let playerDayCount;
 async function getWeather() {
     const response = await fetch(`http://127.0.0.1:3000/findweather/${playerLocation}`);
     const data = await response.json();
-    console.log(data);
+    if (data.weather_code > 50) {
+        console.log('Weather 1');
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`
+    }
+    else if (data.weather_code > 1) {
+        console.log('Weather 2');
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground3.webp')`
+    }
+    else {
+        console.log('Weather 3');
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`
+    }
 }
 
 
@@ -60,7 +71,7 @@ function gameScreenText() {
     gameScreenDayCount.innerHTML = `Days survived: ${playerDayCount}`;
 }
 
-//Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään sijainti
+//Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään peliä sen mukaan
 async function markerCLick(town) {
     let bool;
     if (playerLocation !== town[3]) {
@@ -71,12 +82,12 @@ async function markerCLick(town) {
         map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
         const response = await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
         const jsonData = await response.json();
-        console.log(jsonData);
         if (jsonData.arrest) {
             alert("You found a bandit!")
-            eventPopupOpen('../images/bandit2.webp', 'You found the man! After some fighting you manage to catch him')
+            //eventPopupOpen('../images/bandit2.webp', 'You found the man! After some fighting you manage to catch him')
         }
-        getStats(); //Päivitetään statsit ja sää ruudulle
+        await getStats(); //Päivitetään statsit ja sää ruudulle
+        await getWeather()
     }
 }
 
@@ -86,13 +97,12 @@ async function getLocations() {
     for (let town of locationData) {
         if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
             map.setView([town[0], town[1]], 10);
-            playerLocationName = town[2];
         }
         L.marker([town[0], town[1]]).addTo(map).on('click', () => markerCLick(town)); //Luodaan karttaan klikattavat markkerit
     }
-    getStats(); //Näytetään statsit ruudulla
 }
 
+//Haetaan statsit ja päivitetään ne ruudulle
 async function getStats() {
     const response = await fetch(`http://127.0.0.1:3000/getstats`);
     const jsonData = await response.json();
@@ -103,7 +113,6 @@ async function getStats() {
     playerCurrency = jsonData.money
     playerDayCount = jsonData.dayCount
     gameScreenText();
-    getWeather()
 }
 
 
@@ -116,9 +125,11 @@ loadUserForm.addEventListener('submit', async function(evt) {
     const jsonData = await response.json(); //Haetaan pelaajan tiedot databasesta
     playerLocation = jsonData.location;
     playerName = jsonData.name;
+    playerLocationName = jsonData.location
+    await getWeather() //Haetaan sää pelin alustusta varten
     getLocations(); //Ladataan pelin kartta tilanne
+    await getStats()
     gameScreen.style.display = 'flex';
-    gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
 });
 
 
