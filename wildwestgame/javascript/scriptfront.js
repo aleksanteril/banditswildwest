@@ -82,12 +82,12 @@ async function markerCLick(town) {
     map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
     const response = await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
     const jsonData = await response.json();
+    await getStats(); //Päivitetään statsit ja sää ruudulle
+    await getWeather()
     if (jsonData.arrest) {
         alert("You found a bandit!")
         //eventPopupOpen('../images/bandit2.webp', 'You found the man! After some fighting you manage to catch him')
     }
-    await getStats(); //Päivitetään statsit ja sää ruudulle
-    await getWeather()
 }
 
 //Pelin paikkojen haku ja kartta markkerien luonti
