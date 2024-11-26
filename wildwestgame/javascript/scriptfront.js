@@ -84,10 +84,9 @@ async function markerCLick(town) {
     const jsonData = await response.json();
     await getStats(); //Päivitetään statsit ja sää ruudulle
     await getWeather()
-    if (jsonData.arrest) {
-        alert("You found a bandit!")
-        //eventPopupOpen('../images/bandit2.webp', 'You found the man! After some fighting you manage to catch him')
-    }
+    if (!jsonData.arrest) return //Jos ei arrestia palataan tässä kohtaa pois
+    alert("You found a bandit!")
+    //eventPopupOpen('../images/bandit2.webp', 'You found the man! After some fighting you manage to catch him')
 }
 
 //Pelin paikkojen haku ja kartta markkerien luonti
