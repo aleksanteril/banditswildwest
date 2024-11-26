@@ -249,3 +249,9 @@ body, html {
     padding-left: 0.5rem;
 }
 
+#eventpopup button {
+    width: 20%;
+    height: 3rem;
+    align-self: center;
+}
+
