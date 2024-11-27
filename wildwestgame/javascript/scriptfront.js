@@ -42,13 +42,13 @@ async function getWeather() {
     const data = await response.json();
     if (data.weather_code > 50) {
         console.log('Weather 1');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
     } else if (data.weather_code > 1) {
         console.log('Weather 2');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground3.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`;
     } else {
         console.log('Weather 3');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/rainybackground.webp')`;
     }
 }
 
