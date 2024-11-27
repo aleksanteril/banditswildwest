@@ -24,6 +24,7 @@ const popupImgElement = document.querySelector('#popupimg');
 const popupParaElement = document.querySelector('#popuppara');
 const eventPopupElement = document.querySelector('#eventpopup');
 const eventPopupClose = document.querySelector('#eventclose');
+const terminalHTML = document.querySelector('#terminal');
 
 //Globaalit arvot
 let playerLocation;
@@ -51,6 +52,16 @@ async function getWeather() {
     }
 }
 
+function terminalText(text) {
+    const p = document.createElement('p');
+    p.innerText = text;
+    terminalHTML.appendChild(p)
+    console.log(terminalHTML.childElementCount);
+    if (terminalHTML.childElementCount < 4) return;
+    console.log('remove element')
+    terminalHTML.removeChild(terminalHTML.firstChild);
+}
+
 //Popup funktio kun jesse saa valmiiksi
 function eventPopupOpen(image, text) {
     popupImgElement.src = image;
@@ -76,14 +87,15 @@ async function markerCLick(town) {
         bool = confirm(`Do you wish to travel to ${town[2]}?`);
     }
     if (!bool) return; //Jos pelaaja palauttaa false confirm, palataan pois
+    terminalText(`You have traveled to ${town[2]}`)
     playerLocationName = town[2];
-    map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
+    await map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
     const response = await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
     const jsonData = await response.json();
     await getStats(); //Päivitetään statsit ja sää ruudulle
     await getWeather();
     if (!jsonData.arrest) return; //Jos ei arrestia palataan tässä kohtaa pois
-    //alert("You found a bandit!")
+    terminalText(`You found a bandit in ${town[2]}, dollars have been awarded`)
     eventPopupOpen('../images/bandit2.webp',
         'You finally track down the bandit, the tension thick as you face off. Weapons flash, the fight is intense but short. With skill and determination, you overpower them, securing your victory. Bound and defeated, the bandit has no choice but to come with you as you make your way back to claim justice.');
 }
@@ -91,14 +103,16 @@ async function markerCLick(town) {
 //Pelin paikkojen haku ja kartta markkerien luonti
 async function getLocations() {
     const response = await fetch(`http://127.0.0.1:3000/locations`);
-    const locationData = await response.json();
-    for (let town of locationData) {
-        if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
-            map.setView([town[0], town[1]], 10);
-        }
+    const towns = await response.json();
+    for (let town of towns) {
         L.marker([town[0], town[1]]).
             addTo(map).
             on('click', () => markerCLick(town)); //Luodaan karttaan klikattavat markkerit
+        if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
+            map.setView([town[0], town[1]], 10);
+            playerLocationName = town[2];  //Location name ja päivitetään se stat ruudulle
+            gameScreenText();
+        }
     }
 }
 
@@ -107,6 +121,7 @@ async function getStats() {
     const response = await fetch(`http://127.0.0.1:3000/getstats`);
     const jsonData = await response.json();
     console.log(jsonData);
+    playerName = jsonData.name;
     playerLocation = jsonData.location;
     playerBanditsCaptured = jsonData.banditsArrested;
     playerTravelMiles = jsonData.travelKm * 0.62;
@@ -115,21 +130,20 @@ async function getStats() {
     gameScreenText();
 }
 
-//Pelin lataus, pelaaja syöttää usernamen, backend lataa tai luo uuden
-loadUserForm.addEventListener('submit', async function(evt) {
+//Pelin alustus funktio
+async function gameBegin(evt) {
     evt.preventDefault();
-    loginScreen.style.display = 'none';
     const username = document.querySelector('#username').value;
-    const response = await fetch(`http://127.0.0.1:3000/play/${username}`);
-    const jsonData = await response.json(); //Haetaan pelaajan tiedot databasesta, tai luodaan uusi
-    playerLocation = jsonData.location;
-    playerName = jsonData.name;
-    playerLocationName = jsonData.location;
+    await fetch(`http://127.0.0.1:3000/play/${username}`);
+    await getStats(); //Haetaan statsit ja asetetaan ne näkyviin
     await getWeather(); //Haetaan sää pelin alustusta varten
     getLocations(); //Ladataan pelin kartta ja markkerit
-    await getStats(); //Haetaan statsit ja asetetaan ne näkyviin
+    loginScreen.style.display = 'none';
     gameScreen.style.display = 'flex'; //Gamescreen element näkyviin
-});
+}
+//Pelin lataus, pelaaja syöttää usernamen, backend lataa tai luo uuden
+loadUserForm.addEventListener('submit', gameBegin);
+
 
 /* JS SCRIPTI BUTTONEILLE */
 gameHelpButton.addEventListener('click', function() {
