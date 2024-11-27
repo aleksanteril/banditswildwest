@@ -50,13 +50,18 @@ body, html {
     color: white;
     border: 0.3125rem solid #b35e00;
     border-radius: 0.625rem;
+    font-family: inherit;
+    font-size: 1.7rem;
+    animation: pulse 1.5s infinite;
 }
 
 .bcontent:hover {
     background-color: #b35e00;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    animation: wobble 0.5s;
 }
 
+/* content tyyli kaikille tekstilaatikoille*/
 .content {
     background-color: #ffd9b7;
     border: 0.3125rem solid #b35e00;
@@ -91,22 +96,9 @@ body, html {
 
 #loginscreen #username {
     padding: 0.15rem 0.4rem;
-    background-color: #ffd9b7;
     color: #333;
-    border: 0.3125rem solid #b35e00;
-    border-radius: 0.625rem;
     font-size: 1.5rem;
     text-align: center;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-    font-family: 'MaidenOrange-Regular', Arial, sans-serif;
-}
-
-#loginscreen #username:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-}
-
-#loginscreen #username::placeholder {
-    color: #999;
 }
 
 #loginscreen #playbutton {
@@ -116,41 +108,26 @@ body, html {
     text-align: center;
     margin-top: 0.5rem;
     margin-bottom: 8.5rem;
-    font-family: 'MaidenOrange-Regular', Arial, sans-serif;
 }
 
 #container #pelinohjeet-button {
     cursor: pointer;
-    font-size: 1.8rem;
     padding: 0.625rem 1.25rem;
     position: absolute;
     top: 4.5rem;
     right: 7rem;
-    animation: pulse 1.5s infinite;
-    font-family: 'MaidenOrange-Regular', Arial, sans-serif;
 }
 
-#container #pelinohjeet-button:hover {
-    animation: wobble 0.5s;
-}
 
-#container .dropdown-content {
+#container #pelinohjeet-dropdown {
     display: none;
     position: absolute;
     top: 9.5rem;
     right: 2rem;
-    background-color: #ffd9b7;
-    border: 0.3125rem solid #b35e00;
-    border-radius: 0.625rem;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
     width: 20rem;
     max-height: calc(100vh - 7rem);
     overflow-y: auto;
     font-size: 2rem;
-}
-
-#container .dropdown-content:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
 
 #container #pelinohjeet-dropdown p {
