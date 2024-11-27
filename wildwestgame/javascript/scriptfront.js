@@ -145,7 +145,7 @@ async function gameBegin(evt) {
 loadUserForm.addEventListener('submit', gameBegin);
 
 
-/* JS SCRIPTI BUTTONEILLE */
+// JS SCRIPTI BUTTONILLE //
 gameHelpButton.addEventListener('click', function() {
     if (dropdown.style.display === 'none' || dropdown.style.display === '') {
         dropdown.style.display = 'block';
@@ -153,6 +153,12 @@ gameHelpButton.addEventListener('click', function() {
         dropdown.style.display = 'none';
     }
 });
+
+// JS SCRIPTI AUDIOLLE JA MUTEBUTTONILLE //
+
+//WORK IN PROGRESS//
+
+
 
 //Event popup sulkemis nappi
 eventPopupClose.addEventListener('click',
