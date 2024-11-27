@@ -119,8 +119,7 @@ def findweather(icao):
 def play(username):
     global player
     player = Player(username)
-    responseJson = player.getStatsJson()
-    return Response(response=responseJson, status=200, mimetype="application/json")
+    return Response(status=200)
 
 @app.route('/locations')
 def locations():
@@ -131,7 +130,7 @@ def locations():
 @app.route('/getstats')
 def getstats():
     responseJson = player.getStatsJson()
-    print(player.location, player.travelKm, player.travelCount, player.banditLocation, player.banditsArrested)
+    print(player.location, player.travelKm, player.travelCount, player.banditLocation, player.banditsArrested, player.money, player.dayCount)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 
