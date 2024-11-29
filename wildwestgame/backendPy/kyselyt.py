@@ -78,6 +78,10 @@ def check_username():
 
 #FETCH KYSELYT #############
 
+def fetch_user_airportname():
+    sql_query_user_airportname = f"SELECT name FROM airport WHERE ident in(SELECT location FROM game WHERE id = %s);"
+    return sql_query_user_airportname
+
 #Kysely jolla saadaan käyttäjän maa LOWERcasena
 #def fetch_user_country():
 #    sql_query_fetch_user_country = (f"SELECT LOWER(name) FROM country WHERE iso_country in("

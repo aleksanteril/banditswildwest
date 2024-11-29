@@ -84,6 +84,11 @@ class Player:
         database.update(query, (self.name,))
         return
 
+    def playerLocationName(self):
+        query = kyselyt.fetch_user_airportname()
+        nameTuple = database.query_fetchone(query, (self.name,))
+        return nameTuple[0]
+
 
 
 #Palauttaa random bandit location ICAO
@@ -113,7 +118,7 @@ def events():
         player.updateMoney(500)
         response = {
             "image": "../images/bandit2.webp",
-            "terminaltext": f"You found a bandit in {player.location}, 500 dollars have been awarded",
+            "terminaltext": f"You found a bandit in {player.playerLocationName()}, 500 dollars have been awarded",
             "text": "You finally track down the bandit, the tension thick as you face off. Weapons flash, the fight is intense but short. With skill and determination, you overpower them, securing your victory. Bound and defeated, the bandit has no choice but to come with you as you make your way back to claim justice.",
             "audio": "../sounds/crows.mp3"
         }
