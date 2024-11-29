@@ -23,7 +23,7 @@ const gameContainer = document.querySelector('#container');
 const popupImgElement = document.querySelector('#popupimg');
 const popupParaElement = document.querySelector('#popuppara');
 const eventPopupElement = document.querySelector('#eventpopup');
-const eventPopupClose = document.querySelector('#eventclose');
+const eventPopupCloseButton = document.querySelector('#eventclose');
 const terminalHTML = document.querySelector('#terminal');
 
 //Globaalit arvot
@@ -68,6 +68,12 @@ function eventPopupOpen(image, text) {
     eventPopupElement.style.display = 'flex';
 }
 
+function eventPopupClose(evt) {
+    eventPopupElement.style.display = 'none';
+    popupImgElement.src = '';
+    popupParaElement.innerHTML = '';
+}
+
 //Ruudulle statsien päivitys
 function gameScreenText() {
     gameScreenNickname.innerHTML = `Playing as: ${playerName}`;
@@ -83,8 +89,8 @@ async function eventRequest(){
     const response = await fetch ('http://127.0.0.1:3000/events');
     const event = await response.json();
     console.log(event)
-    await eventPopupOpen(event.image, event.text);
-    await terminalText(event.terminaltext);
+    eventPopupOpen(event.image, event.text);
+    terminalText(event.terminaltext);
 }
 
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään peliä sen mukaan
@@ -158,10 +164,6 @@ gameHelpButton.addEventListener('click', function() {
 });
 
 //Event popup sulkemis nappi
-eventPopupClose.addEventListener('click', () => {
-    eventPopupElement.style.display = 'none';
-    popupImgElement.src = '';
-    popupParaElement.innerHTML = '';
-});
+eventPopupCloseButton.addEventListener('click', eventPopupClose)
 
 
