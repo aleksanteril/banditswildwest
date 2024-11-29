@@ -68,7 +68,7 @@ function eventPopupOpen(image, text) {
     eventPopupElement.style.display = 'flex';
 }
 
-function eventPopupClose(evt) {
+function eventPopupClose() {
     eventPopupElement.style.display = 'none';
     popupImgElement.src = '';
     popupParaElement.innerHTML = '';
