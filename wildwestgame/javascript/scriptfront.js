@@ -58,7 +58,6 @@ function terminalText(text) {
     terminalHTML.appendChild(p)
     console.log(terminalHTML.childElementCount);
     if (terminalHTML.childElementCount < 4) return;
-    console.log('remove element')
     terminalHTML.removeChild(terminalHTML.firstChild);
 }
 
