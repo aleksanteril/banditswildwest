@@ -105,6 +105,30 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+
+@app.route('/events')
+def events():
+    if player.location == player.banditLocation:
+        player.updateBanditsArrested()
+        player.updateMoney(500)
+        response = {
+            "image": "../images/bandit2.webp",
+            "terminaltext": "You found a bandit in ${playerLocationName}, dollars have been awarded",
+            "text": "You finally track down the bandit, the tension thick as you face off. Weapons flash, the fight is intense but short. With skill and determination, you overpower them, securing your victory. Bound and defeated, the bandit has no choice but to come with you as you make your way back to claim justice.",
+            "audio": "../sounds/crows.mp3"
+        }
+        print("bandit")
+    else:
+        response = {
+            "image": "../images/woundedman.webp",
+            "terminaltext": "You stumble across a wounded man",
+            "text": "You stumble across a wounded man",
+            "audio": "../ sounds / crows.mp3"
+        }
+    responseJson = json.dumps(response)
+    return Response(response=responseJson, status=200, mimetype="application/json")
+
+
 @app.route('/findweather/<icao>')
 def findweather(icao):
     query = kyselyt.coordinates_icao(icao)
@@ -140,17 +164,7 @@ def playerMove(icao):
     player.updatePlayerLocation(icao) #Päivitetaan sijainti tietokantaan
     player.updateTravelKilometers(kilometers) #Päivitetään km tietokantaan
     player.updateTravelCounter() #Lasketaan 1 travel counteriin
-    if player.location == player.banditLocation:  #Palautetaan true ja uusi location jos bandit löytyi
-        player.updateBanditsArrested()
-        response = {
-            "arrest": True
-        }
-    else:                                         #Muuten palautetaan false
-        response = {
-            "arrest": False
-        }
-    responseJson = json.dumps(response)
-    return Response(response=responseJson, status=200, mimetype="application/json")
+    return Response(status=200)
 
 
 if __name__ == '__main__':
