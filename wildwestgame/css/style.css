@@ -74,26 +74,26 @@ body, html {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
 
-#volume-button {
+#mute-button {
     left: 5rem;
     top: 4rem;
     z-index: 999;
     position: absolute;
 }
 
-#volume-icon {
+#mute-icon {
     width: 3rem;
     height: 3rem;
-    margin-bottom: -0.35rem;
+    margin-bottom: -0.40rem;
 }
 
 #volume-control {
     display: none;
     position: absolute;
-    left: 3.8rem;
+    left: 4.85rem;
     top: 7rem;
     z-index: 999;
-    width: 100px;
+    width: 4.2rem;
 }
 
 /*                   */
