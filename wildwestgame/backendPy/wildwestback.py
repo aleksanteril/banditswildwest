@@ -134,7 +134,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/events')
 def events():
-    global travel_events
     if player.location == player.banditLocation:
         player.updateBanditsArrested()
         player.updateMoney(500)
@@ -145,7 +144,6 @@ def events():
             "audio": "../sounds/crows.mp3"
         }
     else:
-
         response = random.choice(travel_events) #Satunnnainen tapahtuma
         situation = random.randint(0, 100)
         if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa
