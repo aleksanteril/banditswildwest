@@ -98,7 +98,7 @@ async function eventRequest(){
     const event = await response.json();
     console.log(event)
     eventPopupOpen(event.image, event.text);
-    playEventSound(event.sound);
+    playEventSound(event.audio);
     terminalText(event.terminaltext);
 }
 
