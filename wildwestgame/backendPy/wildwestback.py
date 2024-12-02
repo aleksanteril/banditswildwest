@@ -147,7 +147,7 @@ def events():
     else:
 
         response = random.choice(travel_events) #Satunnnainen tapahtuma
-        situation = random.randint(1, 100)
+        situation = random.randint(0, 100)
         if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa
             if situation > 50: #chänssit "alt" ;) tapahtumalle
                 response["text"] = "Snake bit, and poisoned you."
