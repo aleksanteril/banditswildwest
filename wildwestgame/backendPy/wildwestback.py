@@ -103,6 +103,27 @@ def kilometersBetween(icao1, icao2):
     kilometersRounded = int(meters[0]/1000) #Palautetaan intillä rajusti pyöristetty arvo ja monikon indeksi0
     return kilometersRounded
 
+travel_events = [{  #tapahtumat mitä tapahtuu matkustamisen aikana
+            "image": "../images/woundedman.webp",
+            "terminaltext": "You stumble across a wounded man",
+            "text": "Poor fella... Always breaks my heart to see these things, miss you pa...",
+            "audio": "../sounds/crows.mp3"
+        },
+        {
+            "ID": "snake", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
+            "image": "../images/snake.webp",
+            "terminaltext": "Memory unlock.",
+            "text": "I was never fond of those things, bloody thing bit me. Mom was scared straight.",
+            "audio": "../sounds/crows.mp3"
+        },
+        {
+            "ID": "indians", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
+            "image": "../images/twoindiansonhorse.webp",
+            "terminaltext": "Caution",
+            "text": "Better keep my head down, don't want any trouble...",
+            "audio": "../sounds/crows.mp3"
+        }
+        ]
 
 
 
@@ -113,6 +134,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/events')
 def events():
+    global travel_events
     if player.location == player.banditLocation:
         player.updateBanditsArrested()
         player.updateMoney(500)
@@ -123,12 +145,20 @@ def events():
             "audio": "../sounds/crows.mp3"
         }
     else:
-        response = {
-            "image": "../images/woundedman.webp",
-            "terminaltext": "You stumble across a wounded man",
-            "text": "You stumble across a wounded man",
-            "audio": "../ sounds / crows.mp3"
-        }
+
+        response = random.choice(travel_events) #Satunnnainen tapahtuma
+        situation = random.randint(1, 100)
+        if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa
+            if situation > 50: #chänssit "alt" ;) tapahtumalle
+                response["text"] = "Snake bit, and poisoned you."
+
+        elif response.get("ID") == "indians": #tunnuksen avulla määritellään muokattavaa tapahtumaa
+            if situation > 50: #chänssit "alt" ;) tapahtumalle
+                response["text"] = "Indians shook you down, you lost 250 dollars"
+                player.updateMoney(-250)
+
+
+        #travel_events.remove(response) #poistetaan kohdattu tapahtuma, jottei se toistu uudellee
     responseJson = json.dumps(response)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
