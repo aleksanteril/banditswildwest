@@ -8,8 +8,8 @@ while not connection:
                 host='127.0.0.1',
                 port=3306,
                 database="wildwest_game", #input("Database: "),
-                user="aleksanteri", #input("User: "),
-                password="m4ks4", #input("Password: "),
+                user="Jesseom", #input("User: "),
+                password="Nimisalis123", #input("Password: "),
                 autocommit=True
                 )
         connection = True

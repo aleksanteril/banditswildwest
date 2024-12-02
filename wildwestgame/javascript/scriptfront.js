@@ -50,13 +50,103 @@ async function getWeather() {
     const data = await response.json();
     if (data.weather_code > 50) {
         console.log('Weather 1');
-        gameContainer.style.backgroundImage = `url('../images/rainybackground.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp'), url('../images/rainy.webp')`;
+        gameContainer.style.backgroundColor = "rgba(0, 128, 255, 0.5)";
     } else if (data.weather_code > 1) {
         console.log('Weather 2');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp'), url('../images/clouds3.webp')`;
+        gameContainer.style.backgroundColor = "rgba(112, 128, 144, 0.5)";
     } else {
         console.log('Weather 3');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp'), url('../images/sunray.webp')`;
+        gameContainer.style.backgroundColor = "rgba(255, 255, 0, 0.3)";
+    }
+}
+
+//Rainy Weather
+//A soft gray: rgb(169, 169, 169)
+//A deep blue: rgb(0, 0, 139)
+//A gentle teal: rgb(0, 128, 128)
+
+//Cloudy Weather
+//A light gray: rgb(211, 211, 211)
+//A muted blue: rgb(112, 128, 144)
+//A soft white: rgb(240, 248, 255)
+
+//Sunny Weather
+//A bright yellow: rgb(255, 223, 0)
+//A warm orange: rgb(255, 165, 0)
+//A clear sky blue: rgb(135, 206, 235)
+
+//Vaihtaa backgroundin - lokaatio riippuvainen
+async function updateBackground(location) {
+    switch(location) {
+        case "Centennial":
+            gameContainer.style.backgroundImage = `url('../images.centennial.webp')`;
+            break;
+        case "Buckley":
+            gameContainer.style.backgroundImage = `url('../images.buckley.webp')`;
+            break;
+        case "Rocky Mountain":
+            gameContainer.style.backgroundImage = `url('../images.rockymountain.webp')`;
+            break;
+        case "Provo-Utah Lake":
+            gameContainer.style.backgroundImage = `url('../images.provoutahlake.webp')`;
+            break;
+        case "San Luis Valley":
+            gameContainer.style.backgroundImage = `url('../images.sanluisvalley.webp')`;
+            break;
+        case "City of Colorado Springs":
+            gameContainer.style.backgroundImage = `url('../images.coloradosprings.webp')`;
+            break;
+        case "Saint George-Southwest Utah":
+            gameContainer.style.backgroundImage = `url('../images.saintgeorge.webp')`;
+            break;
+        case "Cedar City":
+            gameContainer.style.backgroundImage = `url('../images.cedarcity.webp')`;
+            break;
+        case "Bryce Canyon":
+            gameContainer.style.backgroundImage = `url('../images.brycecanyon.webp')`;
+            break;
+        case "Wendover":
+            gameContainer.style.backgroundImage = `url('../images.wendover.webp')`;
+            break;
+        case "South Valley":
+            gameContainer.style.backgroundImage = `url('../images.southvalley.webp')`;
+            break;
+        case "Hill":
+            gameContainer.style.backgroundImage = `url('../images.hill.webp')`;
+            break;
+        case "Ogden Hinckley":
+            gameContainer.style.backgroundImage = `url('../images.ogdenhinckley.webp')`;
+            break;
+        case "Logan-Cache":
+            gameContainer.style.backgroundImage = `url('../images.logancache.webp')`;
+            break;
+        case "Vernal":
+            gameContainer.style.backgroundImage = `url('../images.vernal.webp')`;
+            break;
+        case "Grand Junction":
+            gameContainer.style.backgroundImage = `url('../images.grandjunction.webp')`;
+            break;
+        case "Montrose":
+            gameContainer.style.backgroundImage = `url('../images.montrose.webp')`;
+            break;
+        case "Garfield County":
+            gameContainer.style.backgroundImage = `url('../images.garfieldcounty.webp')`;
+            break;
+        case "Aspen-Pitkin Co/Sardy Field":
+            gameContainer.style.backgroundImage = `url('../images.aspenpitkin.webp')`;
+            break;
+        case "Eagle County":
+            gameContainer.style.backgroundImage = `url('../images.eaglecounty.webp')`;
+            break;
+        case "Butts AAF (Fort Carson)":
+            gameContainer.style.backgroundImage = `url('../images.fortcarson.webp')`;
+            break;
+        case "Pueblo":
+            gameContainer.style.backgroundImage = `url('../images.pueblo.webp')`;
+            break;
     }
 }
 
@@ -178,6 +268,7 @@ function playSoundtrack() {
     soundtrack = new Audio('../sounds/soundtrack.mp3');
     soundtrack.loop = true;
     soundtrack.autoplay = true;
+    soundtrack.volume = 0.25;
 }
 
 // toggle mute funktio
@@ -196,7 +287,7 @@ function toggleMute(audio) {
 // mutenappula ja volumebar näkyvyys eventlistener
 const muteButton = document.querySelector('#mute-button');
 muteButton.innerHTML = '<img id="mute-icon" src="../images/volume.png" alt="mute button">';
-muteButton.addEventListener('click', () => toggleMute(soundtrack || eventSound));
+muteButton.addEventListener('click', () => toggleMute(soundtrack));
 muteButton.addEventListener('mouseover', () => {
     document.querySelector('#volume-control').style.display = 'block';
 });
@@ -210,9 +301,9 @@ function volumeBar(audio) {
 }
 const volumeControl = document.querySelector('#volume-control');
 volumeControl.min = 0;
-volumeControl.max = 100;
-volumeControl.value = 50;
-volumeControl.addEventListener('input', () => volumeBar(soundtrack || eventSound));
+volumeControl.max = 50;
+volumeControl.value = 25;
+volumeControl.addEventListener('input', () => volumeBar(soundtrack));
 volumeControl.addEventListener('mouseover', () => {
     document.querySelector('#volume-control').style.display = 'block';
 });
