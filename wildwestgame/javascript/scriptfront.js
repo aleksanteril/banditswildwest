@@ -34,6 +34,14 @@ let playerTravelMiles;
 let playerBanditsCaptured;
 let playerCurrency;
 let playerDayCount;
+let soundtrack; // Lisätty audion kanssa
+let eventSound; // Lisätty audion kanssa
+
+// funktio eventsoundeille
+function playEventSound(popSound) {
+    eventSound = new Audio(popSound);
+    eventSound.autoplay = true;
+}
 
 //Sään haku background kuvaa varten
 async function getWeather() {
@@ -42,10 +50,10 @@ async function getWeather() {
     const data = await response.json();
     if (data.weather_code > 50) {
         console.log('Weather 1');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/rainybackground.webp')`;
     } else if (data.weather_code > 1) {
         console.log('Weather 2');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground3.webp')`;
+        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`;
     } else {
         console.log('Weather 3');
         gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
@@ -155,7 +163,7 @@ async function gameBegin(evt) {
 loadUserForm.addEventListener('submit', gameBegin);
 
 
-/* JS SCRIPTI BUTTONEILLE */
+// JS SCRIPTI BUTTONILLE
 gameHelpButton.addEventListener('click', function() {
     if (dropdown.style.display === 'none' || dropdown.style.display === '') {
         dropdown.style.display = 'block';
@@ -163,6 +171,58 @@ gameHelpButton.addEventListener('click', function() {
         dropdown.style.display = 'none';
     }
 });
+
+// AUDIO ja GAMESOUNDS
+// game soundtrack
+function playSoundtrack() {
+    soundtrack = new Audio('../sounds/soundtrack.mp3');
+    soundtrack.loop = true;
+    soundtrack.autoplay = true;
+}
+
+// toggle mute funktio
+function toggleMute(audio) {
+    const muteIcon = document.querySelector('#mute-icon');
+    if (audio.muted) {
+        audio.muted = false;
+        muteIcon.src = '../images/volume.png';
+        muteIcon.alt = 'unmute';
+    } else {
+        audio.muted = true;
+        muteIcon.src = '../images/mute.png';
+        muteIcon.alt = 'mute';
+    }
+}
+// mutenappula ja volumebar näkyvyys eventlistener
+const muteButton = document.querySelector('#mute-button');
+muteButton.innerHTML = '<img id="mute-icon" src="../images/volume.png" alt="mute button">';
+muteButton.addEventListener('click', () => toggleMute(soundtrack || eventSound));
+muteButton.addEventListener('mouseover', () => {
+    document.querySelector('#volume-control').style.display = 'block';
+});
+muteButton.addEventListener('mouseout', () => {
+    document.querySelector('#volume-control').style.display = 'none';
+});
+
+// volumebar säätö ja näkyvyys eventlistener
+function volumeBar(audio) {
+    audio.volume = +volumeControl.value / 100;
+}
+const volumeControl = document.querySelector('#volume-control');
+volumeControl.min = 0;
+volumeControl.max = 100;
+volumeControl.value = 50;
+volumeControl.addEventListener('input', () => volumeBar(soundtrack || eventSound));
+volumeControl.addEventListener('mouseover', () => {
+    document.querySelector('#volume-control').style.display = 'block';
+});
+volumeControl.addEventListener('mouseout', () => {
+    document.querySelector('#volume-control').style.display = 'none';
+});
+
+// Kutsutaan soundtrackia
+playSoundtrack();
+
 
 //Event popup sulkemis nappi
 eventPopupCloseButton.addEventListener('click', eventPopupClose)
