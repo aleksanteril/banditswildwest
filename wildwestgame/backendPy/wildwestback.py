@@ -113,14 +113,14 @@ travel_events = [{  #tapahtumat mitä tapahtuu matkustamisen aikana
             "ID": "snake", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
             "image": "../images/snake.webp",
             "terminaltext": "Memory unlock.",
-            "text": "I was never fond of those things, bloody thing bit me. Mom was scared straight.",
+            "text": "I was never fond of those things, bloody thing almost bit me. Mom was scared straight.",
             "audio": "../sounds/crows.mp3"
         },
         {
             "ID": "indians", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
             "image": "../images/twoindiansonhorse.webp",
             "terminaltext": "Caution",
-            "text": "Better keep my head down, don't want any trouble...",
+            "text": "Natives ahead! Better keep my head down, don't want any trouble...",
             "audio": "../sounds/crows.mp3"
         }
         ]
@@ -150,12 +150,12 @@ def events():
         situation = random.randint(0, 100)
         if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa
             if situation > 50: #chänssit "alt" ;) tapahtumalle
-                response["text"] = "Snake bit, and poisoned you."
+                response["text"] = "As you wander through the dusty trails of the Wild West, you suddenly feel a sharp pain in your ankle. Looking down, you see a rattlesnake slithering away, its tail still buzzing."
 
         elif response.get("ID") == "indians": #tunnuksen avulla määritellään muokattavaa tapahtumaa
             if situation > 50: #chänssit "alt" ;) tapahtumalle
-                response["text"] = "Indians shook you down, you lost 250 dollars"
-                player.updateMoney(-250)
+                response["text"] = "While riding your steed through a canyon, you hear a wild yell echoing across the rocks. Natives are rushing towards you, your horse spooks and you fall down. You wake up with fewer dollars"
+                player.updateMoney(-200)
 
 
         #travel_events.remove(response) #poistetaan kohdattu tapahtuma, jottei se toistu uudellee
