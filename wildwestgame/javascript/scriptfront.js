@@ -23,7 +23,7 @@ const gameContainer = document.querySelector('#container');
 const popupImgElement = document.querySelector('#popupimg');
 const popupParaElement = document.querySelector('#popuppara');
 const eventPopupElement = document.querySelector('#eventpopup');
-const eventPopupClose = document.querySelector('#eventclose');
+const eventPopupCloseButton = document.querySelector('#eventclose');
 const terminalHTML = document.querySelector('#terminal');
 
 //Globaalit arvot
@@ -66,7 +66,6 @@ function terminalText(text) {
     terminalHTML.appendChild(p)
     console.log(terminalHTML.childElementCount);
     if (terminalHTML.childElementCount < 4) return;
-    console.log('remove element')
     terminalHTML.removeChild(terminalHTML.firstChild);
 }
 
@@ -75,6 +74,12 @@ function eventPopupOpen(image, text) {
     popupImgElement.src = image;
     popupParaElement.innerHTML = text;
     eventPopupElement.style.display = 'flex';
+}
+
+function eventPopupClose() {
+    eventPopupElement.style.display = 'none';
+    popupImgElement.src = '';
+    popupParaElement.innerHTML = '';
 }
 
 //Ruudulle statsien päivitys
@@ -88,6 +93,15 @@ function gameScreenText() {
     gameScreenDayCount.innerHTML = `Days survived: ${playerDayCount}`;
 }
 
+async function eventRequest(){
+    const response = await fetch ('http://127.0.0.1:3000/events');
+    const event = await response.json();
+    console.log(event)
+    eventPopupOpen(event.image, event.text);
+    playEventSound(event.audio);
+    terminalText(event.terminaltext);
+}
+
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään peliä sen mukaan
 async function markerCLick(town) {
     let bool;
@@ -98,14 +112,10 @@ async function markerCLick(town) {
     terminalText(`You have traveled to ${town[2]}`)
     playerLocationName = town[2];
     await map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
-    const response = await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
-    const jsonData = await response.json();
+    await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
+    await eventRequest();
     await getStats(); //Päivitetään statsit ja sää ruudulle
     await getWeather();
-    if (!jsonData.arrest) return; //Jos ei arrestia palataan tässä kohtaa pois
-    terminalText(`You found a bandit in ${town[2]}, dollars have been awarded`)
-    eventPopupOpen('../images/bandit2.webp',
-        'You finally track down the bandit, the tension thick as you face off. Weapons flash, the fight is intense but short. With skill and determination, you overpower them, securing your victory. Bound and defeated, the bandit has no choice but to come with you as you make your way back to claim justice.');
 }
 
 //Pelin paikkojen haku ja kartta markkerien luonti
@@ -215,7 +225,6 @@ playSoundtrack();
 
 
 //Event popup sulkemis nappi
-eventPopupClose.addEventListener('click',
-    () => eventPopupElement.style.display = 'none');
+eventPopupCloseButton.addEventListener('click', eventPopupClose)
 
 

@@ -84,6 +84,11 @@ class Player:
         database.update(query, (self.name,))
         return
 
+    def playerLocationName(self):
+        query = kyselyt.fetch_user_airportname()
+        nameTuple = database.query_fetchone(query, (self.name,))
+        return nameTuple[0]
+
 
 
 #Palauttaa random bandit location ICAO
@@ -98,12 +103,63 @@ def kilometersBetween(icao1, icao2):
     kilometersRounded = int(meters[0]/1000) #Palautetaan intillä rajusti pyöristetty arvo ja monikon indeksi0
     return kilometersRounded
 
+travel_events = [{  #tapahtumat mitä tapahtuu matkustamisen aikana
+            "image": "../images/woundedman.webp",
+            "terminaltext": "You stumble across a wounded man",
+            "text": "Poor fella... Always breaks my heart to see these things, miss you pa...",
+            "audio": "../sounds/crows.mp3"
+        },
+        {
+            "ID": "snake", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
+            "image": "../images/snake.webp",
+            "terminaltext": "Memory unlock.",
+            "text": "I was never fond of those things, bloody thing almost bit me. Mom was scared straight.",
+            "audio": "../sounds/crows.mp3"
+        },
+        {
+            "ID": "indians", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
+            "image": "../images/twoindiansonhorse.webp",
+            "terminaltext": "Caution",
+            "text": "Natives ahead! Better keep my head down, don't want any trouble...",
+            "audio": "../sounds/crows.mp3"
+        }
+        ]
 
 
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+@app.route('/events')
+def events():
+    if player.location == player.banditLocation:
+        player.updateBanditsArrested()
+        player.updateMoney(500)
+        response = {
+            "image": "../images/bandit2.webp",
+            "terminaltext": f"You found a bandit in {player.playerLocationName()}, 500 dollars have been awarded",
+            "text": "You finally track down the bandit, the tension thick as you face off. Weapons flash, the fight is intense but short. With skill and determination, you overpower them, securing your victory. Bound and defeated, the bandit has no choice but to come with you as you make your way back to claim justice.",
+            "audio": "../sounds/crows.mp3"
+        }
+    else:
+        response = random.choice(travel_events) #Satunnnainen tapahtuma
+        situation = random.randint(0, 100)
+        if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa
+            if situation > 50: #chänssit "alt" ;) tapahtumalle
+                response["text"] = "As you wander through the dusty trails of the Wild West, you suddenly feel a sharp pain in your ankle. Looking down, you see a rattlesnake slithering away, its tail still buzzing."
+
+        elif response.get("ID") == "indians": #tunnuksen avulla määritellään muokattavaa tapahtumaa
+            if situation > 50: #chänssit "alt" ;) tapahtumalle
+                response["text"] = "While riding your steed through a canyon, you hear a wild yell echoing across the rocks. Natives are rushing towards you, your horse spooks and you fall down. You wake up with fewer dollars"
+                player.updateMoney(-200)
+
+
+        #travel_events.remove(response) #poistetaan kohdattu tapahtuma, jottei se toistu uudellee
+    responseJson = json.dumps(response)
+    return Response(response=responseJson, status=200, mimetype="application/json")
+
 
 @app.route('/findweather/<icao>')
 def findweather(icao):
@@ -140,17 +196,7 @@ def playerMove(icao):
     player.updatePlayerLocation(icao) #Päivitetaan sijainti tietokantaan
     player.updateTravelKilometers(kilometers) #Päivitetään km tietokantaan
     player.updateTravelCounter() #Lasketaan 1 travel counteriin
-    if player.location == player.banditLocation:  #Palautetaan true ja uusi location jos bandit löytyi
-        player.updateBanditsArrested()
-        response = {
-            "arrest": True
-        }
-    else:                                         #Muuten palautetaan false
-        response = {
-            "arrest": False
-        }
-    responseJson = json.dumps(response)
-    return Response(response=responseJson, status=200, mimetype="application/json")
+    return Response(status=200)
 
 
 if __name__ == '__main__':
