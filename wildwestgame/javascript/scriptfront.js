@@ -44,21 +44,21 @@ function playEventSound(popSound) {
 }
 
 //Sään haku background kuvaa varten
-async function getWeather() {
+async function getWeather(background) {
     const response = await fetch(
         `http://127.0.0.1:3000/findweather/${playerLocation}`);
     const data = await response.json();
     if (data.weather_code > 50) {
-        console.log('Weather 1');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp'), url('../images/rainy.webp')`;
+        console.log('Weather 1 rainy');
+        gameContainer.style.backgroundImage = `${background}, url('../images/rainy.webp')`;
         gameContainer.style.backgroundColor = "rgba(0, 128, 255, 0.5)";
     } else if (data.weather_code > 1) {
-        console.log('Weather 2');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp'), url('../images/clouds3.webp')`;
+        console.log('Weather 2 cloudy');
+        gameContainer.style.backgroundImage = `${background}, url('../images/clouds3.webp')`;
         gameContainer.style.backgroundColor = "rgba(112, 128, 144, 0.5)";
     } else {
-        console.log('Weather 3');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp'), url('../images/sunray.webp')`;
+        console.log('Weather 3 sunny');
+        gameContainer.style.backgroundImage = `${background}, url('../images/sunray.webp')`;
         gameContainer.style.backgroundColor = "rgba(255, 255, 0, 0.3)";
     }
 }
@@ -79,74 +79,52 @@ async function getWeather() {
 //A clear sky blue: rgb(135, 206, 235)
 
 //Vaihtaa backgroundin - lokaatio riippuvainen
-async function updateBackground(location) {
+async function getBackground(location) {
     switch(location) {
         case "Centennial":
-            gameContainer.style.backgroundImage = `url('../images.centennial.webp')`;
-            break;
+            return `url('../images/centennial.webp')`;
         case "Buckley":
-            gameContainer.style.backgroundImage = `url('../images.buckley.webp')`;
-            break;
+            return `url('../images/buckley.webp')`;
         case "Rocky Mountain":
-            gameContainer.style.backgroundImage = `url('../images.rockymountain.webp')`;
-            break;
+            return `url('../images/rockymountain.webp')`;
         case "Provo-Utah Lake":
-            gameContainer.style.backgroundImage = `url('../images.provoutahlake.webp')`;
-            break;
+            return `url('../images/provoutahlake.webp')`;
         case "San Luis Valley":
-            gameContainer.style.backgroundImage = `url('../images.sanluisvalley.webp')`;
-            break;
+            return `url('../images/sanluisvalley.webp')`;
         case "City of Colorado Springs":
-            gameContainer.style.backgroundImage = `url('../images.coloradosprings.webp')`;
-            break;
+            return `url('../images/coloradosprings.webp')`;
         case "Saint George-Southwest Utah":
-            gameContainer.style.backgroundImage = `url('../images.saintgeorge.webp')`;
-            break;
+            return `url('../images/saintgeorge.webp')`;
         case "Cedar City":
-            gameContainer.style.backgroundImage = `url('../images.cedarcity.webp')`;
-            break;
+            return `url('../images/cedarcity.webp')`;
         case "Bryce Canyon":
-            gameContainer.style.backgroundImage = `url('../images.brycecanyon.webp')`;
-            break;
+            return `url('../images/brycecanyon.webp')`;
         case "Wendover":
-            gameContainer.style.backgroundImage = `url('../images.wendover.webp')`;
-            break;
+            return `url('../images/wendover.webp')`;
         case "South Valley":
-            gameContainer.style.backgroundImage = `url('../images.southvalley.webp')`;
-            break;
+            return `url('../images/southvalley.webp')`;
         case "Hill":
-            gameContainer.style.backgroundImage = `url('../images.hill.webp')`;
-            break;
+            return `url('../images/hill.webp')`;
         case "Ogden Hinckley":
-            gameContainer.style.backgroundImage = `url('../images.ogdenhinckley.webp')`;
-            break;
+            return `url('../images/ogdenhinckley.webp')`;
         case "Logan-Cache":
-            gameContainer.style.backgroundImage = `url('../images.logancache.webp')`;
-            break;
+            return `url('../images/logancache.webp')`;
         case "Vernal":
-            gameContainer.style.backgroundImage = `url('../images.vernal.webp')`;
-            break;
+            return `url('../images/vernal.webp')`;
         case "Grand Junction":
-            gameContainer.style.backgroundImage = `url('../images.grandjunction.webp')`;
-            break;
+            return `url('../images/grandjunction.webp')`;
         case "Montrose":
-            gameContainer.style.backgroundImage = `url('../images.montrose.webp')`;
-            break;
+            return `url('../images/montrose.webp')`;
         case "Garfield County":
-            gameContainer.style.backgroundImage = `url('../images.garfieldcounty.webp')`;
-            break;
+            return `url('../images/garfieldcounty.webp')`;
         case "Aspen-Pitkin Co/Sardy Field":
-            gameContainer.style.backgroundImage = `url('../images.aspenpitkin.webp')`;
-            break;
+            return `url('../images/aspenpitkin.webp')`;
         case "Eagle County":
-            gameContainer.style.backgroundImage = `url('../images.eaglecounty.webp')`;
-            break;
+            return `url('../images/eaglecounty.webp')`;
         case "Butts AAF (Fort Carson)":
-            gameContainer.style.backgroundImage = `url('../images.fortcarson.webp')`;
-            break;
+            return `url('../images/fortcarson.webp')`;
         case "Pueblo":
-            gameContainer.style.backgroundImage = `url('../images.pueblo.webp')`;
-            break;
+            return `url('../images/pueblo.webp')`;
     }
 }
 
@@ -205,7 +183,8 @@ async function markerCLick(town) {
     await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
     await eventRequest();
     await getStats(); //Päivitetään statsit ja sää ruudulle
-    await getWeather();
+    const background = await getBackground(town[2])
+    await getWeather(background);
 }
 
 //Pelin paikkojen haku ja kartta markkerien luonti
