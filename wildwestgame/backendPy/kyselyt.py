@@ -97,7 +97,7 @@ def fetch_user_airportname():
 #    return sql_query_fetch_suitcase_country
 
 #Vakio kysely jolla haetaan tietokannasta ihmiset joilla on vähintään yli 1 matkalaukku ja max 5 ihmistä desc order.
-fetch_leaderboards = (f"SELECT id, bandits_captured FROM game WHERE bandits_captured >= 1 order by bandits_captured desc LIMIT 5;")
+fetch_leaderboards = (f"SELECT id, bandits_captured, money, total_kilometers, travel_count FROM game order by bandits_captured desc LIMIT 5;")
 
 #Vakio kysely jolla saadaan olemassaolevat käyttäjät
 fetch_users = (f"SELECT id FROM game")

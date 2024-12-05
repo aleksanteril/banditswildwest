@@ -344,6 +344,15 @@ def getstats():
     print(player.location, player.travelKm, player.travelCount, player.banditLocation, player.banditsArrested, player.money, player.dayCount)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
+@app.route('/leaderboard')
+def getLeaderboard():
+    query = kyselyt.fetch_leaderboards
+    stats = database.query(query)
+    response = []
+    for i in range(len(stats)):
+        response.append(stats[i])
+    responseJson = json.dumps(response)
+    return Response(response=responseJson, status=200, mimetype="application/json")
 
 @app.route('/playermove/<icao>')
 def playerMove(icao):
