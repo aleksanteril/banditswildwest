@@ -65,19 +65,9 @@ class Player:
         return
 
     def updateMoney(self, money):
-        try:
-            money = int(money)  # Muutetaan 'money' kokonaisluvuksi
-        except ValueError:
-            raise ValueError("Money parameter must be convertible to an integer.")
-
         self.money += money  # Päivitä rahamäärä
-        if self.money < 0:  # Varmista, ettei rahamäärä mene alle nollan
+        if self.money < 0: #jos menee negatiiviseksi asetetaan rahat 0
             self.money = 0
-
-        # Jos rahamäärä on tarkalleen 0 päivityksen jälkeen, aseta updateMoney nollaksi
-        if self.money == 0:
-            money = 0
-
         query = kyselyt.update_player_money(self.money)  # Päivitä tietokantaan
         database.update(query, (self.name,))
         return self.money
@@ -87,7 +77,6 @@ class Player:
         query = kyselyt.update_player_travel_kilometers(km)
         database.update(query, (self.name,))
         return
-
 
     def updatePlayerLocation(self, icao):
         self.location = icao
