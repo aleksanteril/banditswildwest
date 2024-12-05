@@ -44,19 +44,87 @@ function playEventSound(popSound) {
 }
 
 //Sään haku background kuvaa varten
-async function getWeather() {
+async function getWeather(background) {
     const response = await fetch(
         `http://127.0.0.1:3000/findweather/${playerLocation}`);
     const data = await response.json();
     if (data.weather_code > 50) {
-        console.log('Weather 1');
-        gameContainer.style.backgroundImage = `url('../images/rainybackground.webp')`;
+        console.log('Weather 1 rainy');
+        gameContainer.style.backgroundImage = `${background}, url('../images/rainy.webp')`;
+        gameContainer.style.backgroundColor = "rgba(0, 128, 255, 0.5)";
     } else if (data.weather_code > 1) {
-        console.log('Weather 2');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground1.webp')`;
+        console.log('Weather 2 cloudy');
+        gameContainer.style.backgroundImage = `${background}, url('../images/clouds3.webp')`;
+        gameContainer.style.backgroundColor = "rgba(112, 128, 144, 0.5)";
     } else {
-        console.log('Weather 3');
-        gameContainer.style.backgroundImage = `url('../images/gameplaybackground2.webp')`;
+        console.log('Weather 3 sunny');
+        gameContainer.style.backgroundImage = `${background}, url('../images/sunray.webp')`;
+        gameContainer.style.backgroundColor = "rgba(255, 255, 0, 0.3)";
+    }
+}
+
+//Rainy Weather
+//A soft gray: rgb(169, 169, 169)
+//A deep blue: rgb(0, 0, 139)
+//A gentle teal: rgb(0, 128, 128)
+
+//Cloudy Weather
+//A light gray: rgb(211, 211, 211)
+//A muted blue: rgb(112, 128, 144)
+//A soft white: rgb(240, 248, 255)
+
+//Sunny Weather
+//A bright yellow: rgb(255, 223, 0)
+//A warm orange: rgb(255, 165, 0)
+//A clear sky blue: rgb(135, 206, 235)
+
+//Vaihtaa backgroundin - lokaatio riippuvainen
+async function getBackground(location) {
+    switch(location) {
+        case "Centennial":
+            return `url('../images/centennial.webp')`;
+        case "Buckley":
+            return `url('../images/buckley.webp')`;
+        case "Rocky Mountain":
+            return `url('../images/rockymountain.webp')`;
+        case "Provo-Utah Lake":
+            return `url('../images/provoutahlake.webp')`;
+        case "San Luis Valley":
+            return `url('../images/sanluisvalley.webp')`;
+        case "City of Colorado Springs":
+            return `url('../images/coloradosprings.webp')`;
+        case "Saint George-Southwest Utah":
+            return `url('../images/saintgeorge.webp')`;
+        case "Cedar City":
+            return `url('../images/cedarcity.webp')`;
+        case "Bryce Canyon":
+            return `url('../images/brycecanyon.webp')`;
+        case "Wendover":
+            return `url('../images/wendover.webp')`;
+        case "South Valley":
+            return `url('../images/southvalley.webp')`;
+        case "Hill":
+            return `url('../images/hill.webp')`;
+        case "Ogden Hinckley":
+            return `url('../images/ogdenhinckley.webp')`;
+        case "Logan-Cache":
+            return `url('../images/logancache.webp')`;
+        case "Vernal":
+            return `url('../images/vernal.webp')`;
+        case "Grand Junction":
+            return `url('../images/grandjunction.webp')`;
+        case "Montrose":
+            return `url('../images/montrose.webp')`;
+        case "Garfield County":
+            return `url('../images/garfieldcounty.webp')`;
+        case "Aspen-Pitkin Co/Sardy Field":
+            return `url('../images/aspenpitkin.webp')`;
+        case "Eagle County":
+            return `url('../images/eaglecounty.webp')`;
+        case "Butts AAF (Fort Carson)":
+            return `url('../images/fortcarson.webp')`;
+        case "Pueblo":
+            return `url('../images/pueblo.webp')`;
     }
 }
 
@@ -82,6 +150,13 @@ function eventPopupClose() {
     popupParaElement.innerHTML = '';
 }
 
+function deathScreen() {
+    gameScreen.style.display = 'none';
+    gameContainer.style.background = 'none';
+    gameContainer.style.backgroundImage = 'none';
+    gameContainer.style.backgroundColor = 'black';
+}
+
 //Ruudulle statsien päivitys
 function gameScreenText() {
     gameScreenNickname.innerHTML = `Playing as: ${playerName}`;
@@ -100,6 +175,7 @@ async function eventRequest(){
     eventPopupOpen(event.image, event.text);
     playEventSound(event.audio);
     terminalText(event.terminaltext);
+    return event.terminaltext === 'Death'; //Death bit, true jos kuoli
 }
 
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään peliä sen mukaan
@@ -113,9 +189,13 @@ async function markerCLick(town) {
     playerLocationName = town[2];
     await map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
     await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
-    await eventRequest();
+    if (await eventRequest()) { //Kuolema true
+        deathScreen()
+        return;
+    }
     await getStats(); //Päivitetään statsit ja sää ruudulle
-    await getWeather();
+    const background = await getBackground(town[2])
+    await getWeather(background);
 }
 
 //Pelin paikkojen haku ja kartta markkerien luonti
@@ -178,6 +258,7 @@ function playSoundtrack() {
     soundtrack = new Audio('../sounds/soundtrack.mp3');
     soundtrack.loop = true;
     soundtrack.autoplay = true;
+    soundtrack.volume = 0.25;
 }
 
 // toggle mute funktio
@@ -196,7 +277,7 @@ function toggleMute(audio) {
 // mutenappula ja volumebar näkyvyys eventlistener
 const muteButton = document.querySelector('#mute-button');
 muteButton.innerHTML = '<img id="mute-icon" src="../images/volume.png" alt="mute button">';
-muteButton.addEventListener('click', () => toggleMute(soundtrack || eventSound));
+muteButton.addEventListener('click', () => toggleMute(soundtrack));
 muteButton.addEventListener('mouseover', () => {
     document.querySelector('#volume-control').style.display = 'block';
 });
@@ -210,9 +291,9 @@ function volumeBar(audio) {
 }
 const volumeControl = document.querySelector('#volume-control');
 volumeControl.min = 0;
-volumeControl.max = 100;
-volumeControl.value = 50;
-volumeControl.addEventListener('input', () => volumeBar(soundtrack || eventSound));
+volumeControl.max = 50;
+volumeControl.value = 25;
+volumeControl.addEventListener('input', () => volumeBar(soundtrack));
 volumeControl.addEventListener('mouseover', () => {
     document.querySelector('#volume-control').style.display = 'block';
 });

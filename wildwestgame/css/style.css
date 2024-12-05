@@ -109,6 +109,7 @@ body, html {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+    background-blend-mode: multiply;
 }
 
 #loginscreen form {
@@ -149,10 +150,10 @@ body, html {
     position: absolute;
     top: 9.5rem;
     right: 2rem;
-    width: 20rem;
+    width: 18.8rem;
     max-height: calc(100vh - 7rem);
     overflow-y: auto;
-    font-size: 2rem;
+    font-size: 1.8rem;
 }
 
 #container #pelinohjeet-dropdown p {
@@ -194,6 +195,7 @@ body, html {
     flex-direction: column;
     justify-content: center;
     background-color: #000000bd;
+    font-size: 1.3rem;
 }
 
 #eventpopup>img {
@@ -239,6 +241,15 @@ body, html {
     height: 25rem;
     width: 50rem;
     cursor: pointer;
+}
+
+#map-bg {
+    position: absolute;
+    z-index: 999;
+    height: 100%;
+    width: 100%;
+    opacity: 0.25;
+    pointer-events: none;
 }
 
 #terminal {
