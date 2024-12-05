@@ -137,6 +137,10 @@ def save_player(kilometers, count, location, bandits_captured, bandits_location)
     sql_query_update_player_travel = (f"UPDATE game SET location = '{location}', total_kilometers = {kilometers}+total_kilometers, travel_count = {count}+travel_count, bandits_captured = {bandits_captured}+bandits_captured, bandit_location = '{bandits_location}' WHERE id = %s;")
     return sql_query_update_player_travel
 
+def player_death():
+    sql_query_player_death = (f"DELETE FROM game WHERE id = %s;")
+    return sql_query_player_death
+
 #Kysely jolla päivitetään onko pelaaja avannut cluen
 #def update_clue_unlocked(int):
 #    sql_query_update_clue_unlocked = (f"UPDATE game SET clue_unlocked = {int} WHERE id = %s;")

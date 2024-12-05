@@ -89,6 +89,11 @@ class Player:
         nameTuple = database.query_fetchone(query, (self.name,))
         return nameTuple[0]
 
+    def death(self):
+        query = kyselyt.player_death()
+        database.update(query, (self.name,))
+        return
+
 
 
 #Palauttaa random bandit location ICAO
