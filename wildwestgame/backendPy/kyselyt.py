@@ -64,7 +64,7 @@ def load_username():
 
 #Kysely jolla päivitetään uusi käyttäjä tietokantaan ja asetetaan alkuarvot
 def new_username(banditLocation):
-    sql_query_new_username = (f"INSERT INTO game (id, location, total_kilometers, travel_count, bandits_captured, bandit_location, money, day_count) VALUES (%s, 'KAPA', 0, 0, 0,'{banditLocation}', 0, 0);")
+    sql_query_new_username = (f"INSERT INTO game (id, location, total_kilometers, travel_count, bandits_captured, bandit_location, money, day_count) VALUES (%s, 'KAPA', 0, 0, 0,'{banditLocation}', 1000, 0);")
     return sql_query_new_username
 
 
@@ -147,6 +147,6 @@ def player_death():
 #    return sql_query_update_clue_unlocked
 
 #Kysely jolla päivitetään peli takaisin alkuun ja lisätään pelaajalle 1 matkalaukku löydetty
-def reset_game_state():
-    sql_query_reset_game_state = (f"UPDATE game SET location = 'KAPA', total_kilometers = 0, travel_count = 0, bandits_captured = bandits_captured+1 WHERE id = %s;")
+def reset_game_state(bandit_location):
+    sql_query_reset_game_state = (f"UPDATE game SET location = 'KAPA', total_kilometers = 0, travel_count = 0, bandits_captured = 0, bandit_location = '{bandit_location}', money = 0, day_count = 0 WHERE id = %s;")
     return sql_query_reset_game_state

@@ -82,6 +82,13 @@ function eventPopupClose() {
     popupParaElement.innerHTML = '';
 }
 
+function deathScreen() {
+    gameScreen.style.display = 'none';
+    gameContainer.style.background = 'none';
+    gameContainer.style.backgroundImage = 'none';
+    gameContainer.style.backgroundColor = 'black';
+}
+
 //Ruudulle statsien päivitys
 function gameScreenText() {
     gameScreenNickname.innerHTML = `Playing as: ${playerName}`;
@@ -100,6 +107,7 @@ async function eventRequest(){
     eventPopupOpen(event.image, event.text);
     playEventSound(event.audio);
     terminalText(event.terminaltext);
+    return event.terminaltext === 'Death'; //Death bit, true jos kuoli
 }
 
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään peliä sen mukaan
@@ -113,7 +121,10 @@ async function markerCLick(town) {
     playerLocationName = town[2];
     await map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
     await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
-    await eventRequest();
+    if (await eventRequest()) { //Kuolema true
+        deathScreen()
+        return;
+    }
     await getStats(); //Päivitetään statsit ja sää ruudulle
     await getWeather();
 }

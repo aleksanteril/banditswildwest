@@ -194,6 +194,7 @@ body, html {
     flex-direction: column;
     justify-content: center;
     background-color: #000000bd;
+    font-size: 1.3rem;
 }
 
 #eventpopup>img {
