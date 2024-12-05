@@ -240,11 +240,15 @@ def events():
                 response["text"] = "As you wander through the dusty trails of the Wild West, you suddenly feel a sharp pain in your ankle. Looking down, you see a rattlesnake slithering away, its tail still buzzing."
                 response["terminaltext"] = "Death"
                 player.death()
+            else:
+                response["text"] = "I was never fond of those things, bloody thing almost bit me. Mom was scared straight."
 
         elif response.get("ID") == "indians": #tunnuksen avulla määritellään muokattavaa tapahtumaa
             if situation > 50: #chänssit "alt" ;) tapahtumalle
                 response["text"] = "While riding your steed through a canyon, you hear a wild yell echoing across the rocks. Natives are rushing towards you, your horse spooks and you fall down. You wake up with fewer dollars"
                 player.updateMoney(-300)
+            else:
+                response["text"] = "Natives ahead! Better keep my head down, don't want any trouble..."
 
         elif response.get("ID") == "woundedman": #tunnuksen avulla määritellään muokattavaa tapahtumaa
             if situation > 70: #chänssit "alt" ;) tapahtumalle
