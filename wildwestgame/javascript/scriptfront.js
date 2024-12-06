@@ -52,6 +52,7 @@ let playerCurrency;
 let playerDeathCount;
 let soundtrack;
 let eventSound;
+let towns;
 
 //funktio leaderboardille
 async function leaderboardDropdown() {
@@ -229,10 +230,10 @@ function gameScreenText() {
 async function eventRequest(){
     const response = await fetch ('http://127.0.0.1:3000/events');
     const event = await response.json();
-    console.log(event)
     eventPopupOpen(event.image, event.text);
     playEventSound(event.audio);
     terminalText(event.terminaltext);
+    if (event.banditFound) await getLocations(false);
     return event.terminaltext === 'Death'; //Death bit, true jos kuoli
 }
 
@@ -258,9 +259,11 @@ async function markerCLick(town, marker) {
 }
 
 //Pelin paikkojen haku ja kartta markkerien luonti
-async function getLocations() {
-    const response = await fetch(`http://127.0.0.1:3000/locations`);
-    const towns = await response.json();
+async function getLocations(first=true) {
+    if (first) {
+        const response = await fetch(`http://127.0.0.1:3000/locations`);
+        towns = await response.json()
+    }
     for (let town of towns) {
         let marker = L.marker([town[0], town[1]]).
             addTo(map).
@@ -268,7 +271,7 @@ async function getLocations() {
         if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
             map.setView([town[0], town[1]], 6);
             playerLocationName = town[2];  //Location name ja päivitetään se stat ruudulle
-            marker.setIcon(greenIcon)
+            marker.setIcon(greenIcon);
             gameScreenText();
         }
     }
@@ -278,7 +281,6 @@ async function getLocations() {
 async function getStats() {
     const response = await fetch(`http://127.0.0.1:3000/getstats`);
     const jsonData = await response.json();
-    console.log(jsonData);
     playerName = jsonData.name;
     playerLocation = jsonData.location;
     playerBanditsCaptured = jsonData.banditsArrested;

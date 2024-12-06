@@ -229,6 +229,7 @@ def events():
         player.updateBanditsArrested()
         player.updateMoney(500)
         response = {
+            "banditFound": True,
             "image": "../images/bandit2.webp",
             "terminaltext": f"You found a bandit in {player.playerLocationName()}, 500 dollars have been awarded",
             "text": "You finally track down the bandit, the tension thick as you face off. Weapons flash, the fight is intense but short. With skill and determination, you overpower them, securing your victory. Bound and defeated, the bandit has no choice but to come with you as you make your way back to claim justice.",
