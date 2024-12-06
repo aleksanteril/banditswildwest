@@ -348,10 +348,7 @@ def getstats():
 def getLeaderboard():
     query = kyselyt.fetch_leaderboards
     stats = database.query(query)
-    response = []
-    for i in range(len(stats)):
-        response.append(stats[i])
-    responseJson = json.dumps(response)
+    responseJson = json.dumps(stats)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 @app.route('/playermove/<icao>')

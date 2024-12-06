@@ -3,7 +3,7 @@
 //Kartan luonti
 const map = L.map('map');
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 7.5,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
@@ -25,6 +25,10 @@ const popupParaElement = document.querySelector('#popuppara');
 const eventPopupElement = document.querySelector('#eventpopup');
 const eventPopupCloseButton = document.querySelector('#eventclose');
 const terminalHTML = document.querySelector('#terminal');
+const gameLeaderboardButton = document.querySelector('#leaderboard-button');
+const gameLeaderboardDropdown = document.querySelector('#leaderboard-dropdown');
+const leaderboardContent = document.querySelector('#leaderboard-content');
+const leaderboardHeaders = document.querySelector('#leaderboard-headers');
 
 //Globaalit arvot
 let playerLocation;
@@ -34,8 +38,50 @@ let playerTravelMiles;
 let playerBanditsCaptured;
 let playerCurrency;
 let playerDayCount;
-let soundtrack; // Lisätty audion kanssa
-let eventSound; // Lisätty audion kanssa
+let soundtrack;
+let eventSound;
+
+//funktio leaderboardille
+async function leaderboardDropdown() {
+    const response = await fetch(`http://127.0.0.1:3000/leaderboard`);
+    const data = await response.json(); // [name0, bandits1, money2, totalKM3, travelcount4]
+    const headerNamesList = ['Name', 'Money', 'Bandits', 'Deaths'];
+    const headerRow = document.createElement('tr');
+
+    for (let headerName of headerNamesList) {
+        const header = document.createElement('th');
+        const headerText = document.createTextNode(headerName);
+        header.appendChild(headerText);
+        headerRow.appendChild(header);
+    }
+    leaderboardHeaders.appendChild(headerRow);
+
+    for (let row of data) {
+        const tableRow = document.createElement('tr');
+
+        const name = document.createElement('td');
+        const nameText = document.createTextNode(row[0]);
+        name.appendChild(nameText);
+        tableRow.appendChild(name);
+
+        const money = document.createElement('td');
+        const moneyText = document.createTextNode(`$${row[2]}`);
+        money.appendChild(moneyText);
+        tableRow.appendChild(money);
+
+        const bandits = document.createElement('td');
+        const banditsText = document.createTextNode(row[1]);
+        bandits.appendChild(banditsText);
+        tableRow.appendChild(bandits);
+
+        const deaths = document.createElement('td');
+        const deathsText = document.createTextNode(`☠ 50`); // Placeholderi kuolemille
+        deaths.appendChild(deathsText);
+        tableRow.appendChild(deaths);
+
+        leaderboardContent.appendChild(tableRow);
+    }
+}
 
 // funktio eventsoundeille
 function playEventSound(popSound) {
@@ -59,7 +105,7 @@ async function getWeather(background) {
     } else {
         console.log('Weather 3 sunny');
         gameContainer.style.backgroundImage = `${background}, url('../images/sunray.webp')`;
-        gameContainer.style.backgroundColor = "rgba(255, 255, 0, 0.3)";
+        gameContainer.style.backgroundColor = "rgba(255, 165, 0, 0.25)";
     }
 }
 
@@ -137,7 +183,7 @@ function terminalText(text) {
     terminalHTML.removeChild(terminalHTML.firstChild);
 }
 
-//Popup funktio kun jesse saa valmiiksi
+//Popup funktio
 function eventPopupOpen(image, text) {
     popupImgElement.src = image;
     popupParaElement.innerHTML = text;
@@ -187,7 +233,7 @@ async function markerCLick(town) {
     if (!bool) return; //Jos pelaaja palauttaa false confirm, palataan pois
     terminalText(`You have traveled to ${town[2]}`)
     playerLocationName = town[2];
-    await map.flyTo([town[0], town[1]], 10);  //Matkustetaan paikkaan
+    await map.flyTo([town[0], town[1]], 6.5);  //Matkustetaan paikkaan
     await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
     if (await eventRequest()) { //Kuolema true
         deathScreen()
@@ -207,7 +253,7 @@ async function getLocations() {
             addTo(map).
             on('click', () => markerCLick(town)); //Luodaan karttaan klikattavat markkerit
         if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
-            map.setView([town[0], town[1]], 10);
+            map.setView([town[0], town[1]], 6);
             playerLocationName = town[2];  //Location name ja päivitetään se stat ruudulle
             gameScreenText();
         }
@@ -243,12 +289,22 @@ async function gameBegin(evt) {
 loadUserForm.addEventListener('submit', gameBegin);
 
 
-// JS SCRIPTI BUTTONILLE
+// How to Play button dropdown
 gameHelpButton.addEventListener('click', function() {
     if (dropdown.style.display === 'none' || dropdown.style.display === '') {
         dropdown.style.display = 'block';
     } else {
         dropdown.style.display = 'none';
+    }
+});
+
+// Leaderboard button
+leaderboardDropdown();
+gameLeaderboardButton.addEventListener('click', function() {
+    if (gameLeaderboardDropdown.style.display === 'none' || gameLeaderboardDropdown.style.display === '') {
+        gameLeaderboardDropdown.style.display = 'block';
+    } else {
+        gameLeaderboardDropdown.style.display = 'none';
     }
 });
 
@@ -306,6 +362,6 @@ playSoundtrack();
 
 
 //Event popup sulkemis nappi
-eventPopupCloseButton.addEventListener('click', eventPopupClose)
+eventPopupCloseButton.addEventListener('click', eventPopupClose);
 
 
