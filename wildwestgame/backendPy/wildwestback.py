@@ -23,7 +23,7 @@ class Player:
         self.banditsArrested = data[4]
         self.banditLocation = data[5]
         self.money = data[6]
-        self.dayCount = data[7]
+        self.deathCount = data[7]
 
     #Statsien haku database
     def getStats(self):
@@ -40,7 +40,7 @@ class Player:
             "banditsArrested": self.banditsArrested,
             "banditLocation": self.banditLocation,
             "money": self.money,
-            "dayCount": self.dayCount
+            "deathCount": self.deathCount
         }
         return json.dumps(response)
 
@@ -58,8 +58,9 @@ class Player:
         database.update(query, (self.name,))
         return
 
-    def updateDayCount(self):
-        self.dayCount += 1
+    #Death count on databasessa day_count mutta käytetään pelissä death_count
+    def updateDeathCount(self):
+        self.deathCount += 1
         query = kyselyt.update_player_day_count()
         database.update(query, (self.name,))
         return
@@ -90,6 +91,7 @@ class Player:
         return nameTuple[0]
 
     def death(self):
+        self.updateDeathCount()
         query = kyselyt.reset_game_state(randomizeBandit())
         database.update(query, (self.name,))
         return
@@ -341,7 +343,7 @@ def locations():
 @app.route('/getstats')
 def getstats():
     responseJson = player.getStatsJson()
-    print(player.location, player.travelKm, player.travelCount, player.banditLocation, player.banditsArrested, player.money, player.dayCount)
+    print(player.location, player.travelKm, player.travelCount, player.banditLocation, player.banditsArrested, player.money, player.deathCount)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 @app.route('/leaderboard')

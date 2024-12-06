@@ -37,14 +37,14 @@ let playerLocationName;
 let playerTravelMiles;
 let playerBanditsCaptured;
 let playerCurrency;
-let playerDayCount;
+let playerDeathCount;
 let soundtrack;
 let eventSound;
 
 //funktio leaderboardille
 async function leaderboardDropdown() {
     const response = await fetch(`http://127.0.0.1:3000/leaderboard`);
-    const data = await response.json(); // [name0, bandits1, money2, totalKM3, travelcount4]
+    const data = await response.json(); // [name0, bandits1, money2, totalKM3, deathcount4]
     const headerNamesList = ['Name', 'Money', 'Bandits', 'Deaths'];
     const headerRow = document.createElement('tr');
 
@@ -75,7 +75,7 @@ async function leaderboardDropdown() {
         tableRow.appendChild(bandits);
 
         const deaths = document.createElement('td');
-        const deathsText = document.createTextNode(`☠ 50`); // Placeholderi kuolemille
+        const deathsText = document.createTextNode(`☠ ${row[4]}`); // Placeholderi kuolemille
         deaths.appendChild(deathsText);
         tableRow.appendChild(deaths);
 
@@ -211,7 +211,7 @@ function gameScreenText() {
         0)}`;
     gameScreenBanditsCaptured.innerHTML = `Bandits captured: ${playerBanditsCaptured}`;
     gameScreenCurrency.innerHTML = `Dollars: $${playerCurrency}`;
-    gameScreenDayCount.innerHTML = `Days survived: ${playerDayCount}`;
+    gameScreenDayCount.innerHTML = `Deaths: ${playerDeathCount}`;
 }
 
 async function eventRequest(){
@@ -270,7 +270,7 @@ async function getStats() {
     playerBanditsCaptured = jsonData.banditsArrested;
     playerTravelMiles = jsonData.travelKm * 0.62;
     playerCurrency = jsonData.money;
-    playerDayCount = jsonData.dayCount;
+    playerDeathCount = jsonData.deathCount;
     gameScreenText();
 }
 
