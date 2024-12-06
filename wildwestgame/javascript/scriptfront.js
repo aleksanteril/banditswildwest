@@ -7,6 +7,18 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
+//Vihreä ikoni
+const greenIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+
+
 //HTML ELEMENTIT
 const loadUserForm = document.querySelector('#usernameform');
 const gameScreen = document.querySelector('#gamescreen');
@@ -225,12 +237,13 @@ async function eventRequest(){
 }
 
 //Markerin klikkauksesta kysytään haluaako matkustaa kyseiseen paikkaan ja päivitetään peliä sen mukaan
-async function markerCLick(town) {
+async function markerCLick(town, marker) {
     let bool;
     if (playerLocation !== town[3]) {
         bool = confirm(`Do you wish to travel to ${town[2]}?`);
     }
     if (!bool) return; //Jos pelaaja palauttaa false confirm, palataan pois
+    marker.setIcon(greenIcon)
     terminalText(`You have traveled to ${town[2]}`)
     playerLocationName = town[2];
     await map.flyTo([town[0], town[1]], 6.5);  //Matkustetaan paikkaan
@@ -249,12 +262,13 @@ async function getLocations() {
     const response = await fetch(`http://127.0.0.1:3000/locations`);
     const towns = await response.json();
     for (let town of towns) {
-        L.marker([town[0], town[1]]).
+        let marker = L.marker([town[0], town[1]]).
             addTo(map).
-            on('click', () => markerCLick(town)); //Luodaan karttaan klikattavat markkerit
+            on('click', () => markerCLick(town, marker)); //Luodaan karttaan klikattavat markkerit
         if (town[3] === playerLocation) { //Asetetaan kartta pelaajan paikalle
             map.setView([town[0], town[1]], 6);
             playerLocationName = town[2];  //Location name ja päivitetään se stat ruudulle
+            marker.setIcon(greenIcon)
             gameScreenText();
         }
     }
