@@ -97,7 +97,7 @@ def fetch_user_airportname():
 #    return sql_query_fetch_suitcase_country
 
 #Vakio kysely jolla haetaan tietokannasta ihmiset joilla on vähintään yli 1 matkalaukku ja max 5 ihmistä desc order.
-fetch_leaderboards = (f"SELECT id, bandits_captured, money, total_kilometers, travel_count FROM game order by bandits_captured desc LIMIT 5;")
+fetch_leaderboards = (f"SELECT id, bandits_captured, money, total_kilometers, day_count FROM game order by bandits_captured desc LIMIT 5;")
 
 #Vakio kysely jolla saadaan olemassaolevat käyttäjät
 fetch_users = (f"SELECT id FROM game")
@@ -148,5 +148,5 @@ def player_death():
 
 #Kysely jolla päivitetään peli takaisin alkuun ja lisätään pelaajalle 1 matkalaukku löydetty
 def reset_game_state(bandit_location):
-    sql_query_reset_game_state = (f"UPDATE game SET location = 'KAPA', total_kilometers = 0, travel_count = 0, bandits_captured = 0, bandit_location = '{bandit_location}', money = 0, day_count = 0 WHERE id = %s;")
+    sql_query_reset_game_state = (f"UPDATE game SET location = 'KAPA', total_kilometers = 0, travel_count = 0, bandit_location = '{bandit_location}', money = 1000 WHERE id = %s;")
     return sql_query_reset_game_state
