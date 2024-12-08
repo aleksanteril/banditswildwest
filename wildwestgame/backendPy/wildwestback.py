@@ -69,7 +69,7 @@ class Player:
         self.money += money  # Päivitä rahamäärä
         if self.money < 0: #jos menee negatiiviseksi asetetaan rahat 0
             self.money = 0
-        query = kyselyt.update_player_money(self.money)  # Päivitä tietokantaan
+        query = kyselyt.update_player_money(money)  # Päivitä tietokantaan
         database.update(query, (self.name,))
         return
 

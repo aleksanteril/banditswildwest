@@ -247,6 +247,7 @@ async function markerCLick(town, marker) {
     marker.setIcon(greenIcon)
     terminalText(`You have traveled to ${town[2]}`)
     playerLocationName = town[2];
+    playerLocation = town[3]
     await map.flyTo([town[0], town[1]], 6.5);  //Matkustetaan paikkaan
     await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
     if (await eventRequest()) { //Kuolema true
