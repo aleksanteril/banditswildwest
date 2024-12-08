@@ -13,6 +13,13 @@
 </head>
 <body>
 <div id="container">
+    <button id="leaderboard-button" class="bcontent">Leaderboard</button>
+    <div id="leaderboard-dropdown" class="content">
+        <table>
+            <tbody id="leaderboard-headers"></tbody>
+            <tbody id="leaderboard-content"></tbody>
+        </table>
+    </div>
     <button id="mute-button" class="bcontent"></button>
     <label for="volume-control"></label>
     <input type="range" id="volume-control" name="vol" min="0" max="100" value="50">
@@ -52,9 +59,9 @@
         </div>
     </div>
     <div id="eventpopup">
-            <img id="popupimg" class="content">
-            <p id="popuppara" class="content"></p>
-            <button id="eventclose" class="bcontent">Close</button>
+        <img id="popupimg" class="content">
+        <p id="popuppara" class="content"></p>
+        <button id="eventclose" class="bcontent">Close</button>
     </div>
 </div>
 </body>
