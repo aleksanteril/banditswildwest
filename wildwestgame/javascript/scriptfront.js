@@ -219,6 +219,7 @@ function deathScreen() {
     p.style.color = 'red';
     p.style.fontSize = '10rem';
     p.style.height = '45%';
+    p.classList.add('deathtext');
     eventPopupCloseButton.addEventListener('click',() => gameContainer.appendChild(p));
 }
 
