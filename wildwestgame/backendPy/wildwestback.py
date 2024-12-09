@@ -207,7 +207,7 @@ travel_events = [{  #tapahtumat mitä tapahtuu matkustamisen aikana
             "ID": "horse", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
             "image": "../images/horse.webp",
             "terminaltext": "How you came about Luna.",
-            "text": "Jack met Luna, a fiery black mare, by chance under the blazing Wild West sun. With a gentle touch and a quiet bond, they clicked instantly. Now, Luna is Jack's trusted steed, carrying him through dust storms and danger—his only companion on the endless roads.",
+            "text": " jake met Luna, a fiery black mare, by chance under the blazing Wild West sun. With a gentle touch and a quiet bond, they clicked instantly. Now, Luna is Jack's trusted steed, carrying him through dust storms and danger—his only companion on the endless roads.",
             "audio": "../sounds/horse_neigh.mp3"
         },
         {
@@ -242,7 +242,6 @@ def events():
         responseJson = json.dumps(response)
         return Response(response=responseJson, status=200, mimetype="application/json")
 
-    #response = travel_events[7].copy()
     response = random.choice(travel_events) #Satunnnainen tapahtuma
     situation = random.randint(0, 100)
 
@@ -252,14 +251,14 @@ def events():
             response["terminaltext"] = "Death"
             player.death()
         else:
-            response["text"] = "Jack reined his horse to a halt, the sharp buzz of a rattler breaking the trail’s quiet. The snake laid in a roll on the path, its tail flicking a clear warning. Well, the roads yours, friend, Jack muttered, tipping his hat. With a gentle tug, he guided his horse wide, giving the rattler its space before trotting on down the trail."
+            response["text"] = f"{player.name} reined his horse to a halt, the sharp buzz of a rattler breaking the trail’s quiet. The snake laid in a roll on the path, its tail flicking a clear warning. Well, the roads yours, friend, Jack muttered, tipping his hat. With a gentle tug, he guided his horse wide, giving the rattler its space before trotting on down the trail."
 
     elif response.get("ID") == "indians": #tunnuksen avulla määritellään muokattavaa tapahtumaa
         if situation > 50 and player.money >= 300: #chänssit "alt" ;) tapahtumalle
             response["text"] = "While riding your steed through a canyon, you hear a wild yell echoing across the rocks. Natives are rushing towards you, your horse spooks and you fall down. You wake up with 300 dollars less."
             player.updateMoney(-300)
         else:
-            response["text"] = "Jack rode slowly through the pine-studded valley, the soft clop of his horse's hooves muffled by the earth beneath. The afternoon sun bathed the landscape in a golden glow, and the air was heavy with the scent of sagebrush. Ahead, movement caught his eye. A group of riders appeared on the ridge, their silhouettes sharp against the horizon. Native Americans, their horses sleek and surefooted, moved as one with the land. They descended toward him, deliberate but unhurried, their expressions calm yet unreadable."
+            response["text"] = f"{player.name} rode slowly through the pine-studded valley, the soft clop of his horse's hooves muffled by the earth beneath. The afternoon sun bathed the landscape in a golden glow, and the air was heavy with the scent of sagebrush. Ahead, movement caught his eye. A group of riders appeared on the ridge, their silhouettes sharp against the horizon. Native Americans, their horses sleek and surefooted, moved as one with the land. They descended toward him, deliberate but unhurried, their expressions calm yet unreadable."
 
 
     elif response.get("ID") == "woundedman": #tunnuksen avulla määritellään muokattavaa tapahtumaa
@@ -284,7 +283,7 @@ def events():
 
     elif response.get("ID") == "duel": #tunnuksen avulla määritellään muokattavaa tapahtumaa
         if situation > 80: #kuolematapaus
-            response["text"] = "The sun dipped low as a man approached, eyes cold. 'Jack,' he said, 'I hear you're fast. Let’s see.' I met his gaze, hand on my Colt. 'You looking for trouble?' He smiled. 'Let’s finish it.' A blur of motion, a loud crack, and suddenly the world spun. Pain shot through my side as I hit the dirt. I stared up at the sky, breath ragged, knowing the  Wild West had claimed another one."
+            response["text"] = f"The sun dipped low as a man approached, eyes cold. '{player.name},' he said, 'I hear you're fast. Let’s see.' I met his gaze, hand on my Colt. 'You looking for trouble?' He smiled. 'Let’s finish it.' A blur of motion, a loud crack, and suddenly the world spun. Pain shot through my side as I hit the dirt. I stared up at the sky, breath ragged, knowing the  Wild West had claimed another one."
             response["audio"] = "../sounds/pistol_shot.mp3"
             response["terminaltext"] = "Death"
             player.death()
@@ -305,14 +304,14 @@ def events():
             response["text"] = "It was a quiet day when the Native Americans rode into the village, eyes full of menace. They stormed through the streets, shouting orders. I tried to reach Luna, but before I could react, one of them spotted me. A single arrow hit the back of my head, and everything went dark. The wild west had claimed another life, as quickly and ruthlessly as it always did."
             response["audio"] = "../sounds/man_dying.mp3"
             response["terminaltext"] = "Death"
-            #player.death()
+            player.death()
 
     elif response.get("ID") == "tumbleweed": #tunnuksen avulla määritellään muokattavaa tapahtumaa
         if situation > 50:
             response["text"] = "I always loved you claire, I still have nightmares of how it all ended so abruptly. I swear I'll correct the injustices of this world, evil will perish."
             response["terminaltext"] = "Lost but not forgotten."
         else:
-            response["text"] = "Jack, a blacksmith, lost everything to bandits. Armed with his father’s revolver, he saved a rancher, earning a horse and boots. Training hard, Jack became a cowboy and soon, a Wild West legend."
+            response["text"] = f"{player.name}, a blacksmith, lost everything to bandits. Armed with his father’s revolver, he saved a rancher, earning a horse and boots. Training hard, Jack became a cowboy and soon, a Wild West legend."
 
     elif response.get("ID") == "gamble": #tunnuksen avulla määritellään muokattavaa tapahtumaa
         if situation > 50:
@@ -327,7 +326,7 @@ def events():
 
     elif response.get("ID") == "gunstore": #tunnuksen avulla määritellään muokattavaa tapahtumaa
         if situation > 50:
-            response["text"] = "After weeks on the trail, Jack returned, determined to pay Rafael for the custom Colt. He walked into the shop, pulled the leather pouch from his belt, and said, 'I’ve got your money.' Rafael nodded, a small smile on his face. Jack tipped his hat, knowing he had kept his word. You pay the 500 dollar debt."
+            response["text"] = f"After weeks on the trail, {player.name} returned, determined to pay Rafael for the custom Colt. He walked into the shop, pulled the leather pouch from his belt, and said, 'I’ve got your money.' Rafael nodded, a small smile on his face. {player.name} tipped his hat, knowing he had kept his word. You pay the 500 dollar debt."
             response["terminaltext"] = "Paying debt."
             player.updateMoney(-500)
         else:
@@ -364,7 +363,6 @@ def findweather(icao):
 def play(username):
     global player
     player = Player(username)
-    loadevents(travel_events)
     return Response(status=200)
 
 @app.route('/locations')
