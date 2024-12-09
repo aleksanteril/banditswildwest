@@ -247,7 +247,7 @@ def events():
     situation = random.randint(0, 100)
 
     if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 80: #kuolamatapaus
+        if situation > 70: #kuolamatapaus
             response["text"] = "you wander through the dusty trails of the Wild West, you suddenly feel a sharp pain in your ankle. Looking down, you see a rattlesnake slithering away, its tail still buzzing."
             response["terminaltext"] = "Death"
             player.death()
@@ -267,14 +267,14 @@ def events():
             response["text"] = "The man stated he needed help, so you jumped off your horse and started to help him, under a second and there was a gun under your chin. He steals 200 dollars."
             player.updateMoney(-200)
 
-        elif situation > 50:
+        elif situation > 40:
             response["text"] = "As I rode along the road, I spotted a man collapsed by the side, his clothes torn. He groaned, barely conscious, and I could see the pain in his eyes. Without thinking, I dismounted and knelt beside him. 'Hang on, I'll get you help,' I said, lifting him as gently as I could. Supporting him, to the nearest doctor. For your help he gave you 50 dollars."
             player.updateMoney(50)
         else:
             response["text"] = "For a moment, my chest ached—not from judgment, but from a deep well of pity. I wondered who he was before the world weighed him down?"
 
     elif response.get("ID") == "wolf": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 80: #kuolematapaus
+        if situation > 70: #kuolematapaus
             response["text"] = f"Under the pale moon, {player.name} rode his horse through the quiet wilderness. A shadow moved—then leapt. The wolf's cunning was greater than Jack’s speed, and by dawn, the wild claimed its victory." #pelin lopetus tila
             response["terminaltext"] = "Death"
             player.death()
@@ -283,7 +283,7 @@ def events():
 
 
     elif response.get("ID") == "duel": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 80: #kuolematapaus
+        if situation > 70: #kuolematapaus
             response["text"] = "The sun dipped low as a man approached, eyes cold. 'Jack,' he said, 'I hear you're fast. Let’s see.' I met his gaze, hand on my Colt. 'You looking for trouble?' He smiled. 'Let’s finish it.' A blur of motion, a loud crack, and suddenly the world spun. Pain shot through my side as I hit the dirt. I stared up at the sky, breath ragged, knowing the  Wild West had claimed another one."
             response["audio"] = "../sounds/pistol_shot.mp3"
             response["terminaltext"] = "Death"
@@ -293,7 +293,7 @@ def events():
 
 
     elif response.get("ID") == "bar-duel": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 80: #kuolematapaus
+        if situation > 70: #kuolematapaus
             response["text"] = "As you were heading off the bar, a drunken man challenged you to a brawl. But he didnt play fair, he reached for a knife. The knife was thrust forward, and in an instant, your world went dark."
             response["terminaltext"] = "Death"
             player.death()
@@ -301,7 +301,7 @@ def events():
             response["text"] = "As you were heading off to the road, a drunken man challenged you to a brawl. The saloon was chaos—shouts, breaking glass, and the thud of fists on flesh. You ducked a wild swing, countering with a hard punch to the man’s gut, sending him staggering into a table."
 
     elif response.get("ID") == "indianscharging": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 80: #kuolematapaus
+        if situation > 70: #kuolematapaus
             response["text"] = "It was a quiet day when the Native Americans rode into the village, eyes full of menace. They stormed through the streets, shouting orders. I tried to reach Luna, but before I could react, one of them spotted me. A single arrow hit the back of my head, and everything went dark. The wild west had claimed another life, as quickly and ruthlessly as it always did."
             response["audio"] = "../sounds/man_dying.mp3"
             response["terminaltext"] = "Death"
@@ -315,18 +315,18 @@ def events():
             response["text"] = "Jack, a blacksmith, lost everything to bandits. Armed with his father’s revolver, he saved a rancher, earning a horse and boots. Training hard, Jack became a cowboy and soon, a Wild West legend."
 
     elif response.get("ID") == "gamble": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 50:
+        if situation > 80:
             response["text"] = "Before hitting the road again you decide to gamble a little. With a sly grin, you lay down your final card. The table fell silent, then erupted in groans. While smiling ear to ear you, collect the pot. 'Victory never felt so sweet.' You win 500 dollars."
             player.updateMoney(500)
 
-        elif situation > 25:
+        elif situation > 30:
             response["text"] = "Before hitting the road again you decide to gamble a little. Devastation hits your face as you realize that there's no chance of winning. You lose 500 dollars."
             player.updateMoney(-500)
         else:
             response["text"] = f"{player.name} leaned against the weathered bar, the worn deck of cards in his hand. 'Might as well kill some time,' he thought, flicking the cards onto the table. The road would still be there when he was done. With a half-smirk, he dealt the first hand, ready for a game before the next long ride ahead."
 
     elif response.get("ID") == "gunstore": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 50:
+        if situation > 50 and player.money >= 500:
             response["text"] = "After weeks on the trail, Jack returned, determined to pay Rafael for the custom Colt. He walked into the shop, pulled the leather pouch from his belt, and said, 'I’ve got your money.' Rafael nodded, a small smile on his face. Jack tipped his hat, knowing he had kept his word. You pay the 500 dollar debt."
             response["terminaltext"] = "Paying debt."
             player.updateMoney(-500)
@@ -334,13 +334,13 @@ def events():
             response["text"] = "You ride past Rafael's gunstore, the sight of it reminding you of the debt you still owe for the custom Colt he crafted just for you. The revolver's smooth grip and polished barrel had been worth every penny, but your pockets were lighter than you'd like. You tell yourself you'll take care of it later, after a few more rides and a few more jobs. For now, you urge your horse forward, knowing Rafael will wait—just like always."
 
     elif response.get("ID") == "fleeing": #tunnuksen avulla määritellään muokattavaa tapahtumaa
-        if situation > 80: #kuolematapaus
+        if situation > 70: #kuolematapaus
             response["text"] = "As the sun set, I rode through the plains, only to find an outlaw blocking my path. 'This is my territory,' he growled. I reached for my Colt, but he was faster. A single shot rang out, and before I could react, the world went black. The wild west had claimed another."
             response["terminaltext"] = "Death"
             response["audio"] = "../sounds/pistol_shot.mp3"
             player.death()
 
-        elif situation < 40:
+        elif situation > 40:
             response["text"] = "You stumble acros a young buck, tears running down his eyes as he tells he owns bandits money and that they threaten his family you decide to help him out lending the money he owns to the bandits. You give the fellow 300 dollars."
             player.updateMoney(-300)
         else:
