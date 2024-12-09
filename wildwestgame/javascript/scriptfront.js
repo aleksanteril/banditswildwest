@@ -219,7 +219,7 @@ function deathScreen() {
     p.style.color = 'red';
     p.style.fontSize = '10rem';
     p.style.height = '45%';
-    gameContainer.appendChild(p);
+    eventPopupCloseButton.addEventListener('click',() => gameContainer.appendChild(p));
 }
 
 //Ruudulle statsien päivitys
