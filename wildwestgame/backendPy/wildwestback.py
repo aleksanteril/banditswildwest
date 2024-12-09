@@ -364,7 +364,6 @@ def findweather(icao):
 def play(username):
     global player
     player = Player(username)
-    loadevents(travel_events)
     return Response(status=200)
 
 @app.route('/locations')
