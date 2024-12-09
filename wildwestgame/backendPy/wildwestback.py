@@ -63,6 +63,7 @@ class Player:
         self.deathCount += 1
         query = kyselyt.update_player_day_count()
         database.update(query, (self.name,))
+        print(self.name, "DEATH")
         return
 
     def updateMoney(self, money):
@@ -381,8 +382,7 @@ def locations():
 @app.route('/getstats/<username>')
 def getstats(username):
     responseJson = playerList[username].getStatsJson()
-    print(playerList)
-    print(playerList[username].location, playerList[username].travelKm*0.62, playerList[username].travelCount, playerList[username].banditLocation, playerList[username].banditsArrested, playerList[username].money, playerList[username].deathCount)
+    print(username, playerList[username].location, playerList[username].travelKm*0.62, playerList[username].travelCount, playerList[username].banditLocation, playerList[username].banditsArrested, playerList[username].money, playerList[username].deathCount)
     return Response(response=responseJson, status=200, mimetype="application/json")
 
 @app.route('/leaderboard')
