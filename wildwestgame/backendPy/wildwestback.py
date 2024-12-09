@@ -165,14 +165,14 @@ travel_events = [{  #tapahtumat mitä tapahtuu matkustamisen aikana
         {
             "ID": "indianscharging", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
             "image": "../images/indianscharging.webp",
-            "terminaltext": "Native Americans rushed your location.",
-            "text": "Native  Americans rode in and chaos erupted. You dashed for the alley, breathing heavy. He sprinted for Luna, barely outrunning the gang. Reaching the narrow path, he scrambled up on Luna riding away. The bandits unable to follow. He stopped to catch his breath, the danger fading. With a grim smile, he holstered his Colt. Close escape in the Wild West.",
+            "terminaltext": "Native Americans rushed to your location.",
+            "text": "Native Americans rode in and chaos erupted. You dashed for the alley, breathing heavy. He sprinted for Luna, barely outrunning the gang. Reaching the narrow path, he scrambled up on Luna riding away. The bandits unable to follow. He stopped to catch his breath, the danger fading. With a grim smile, he holstered his Colt. Close escape in the Wild West.",
             "audio": "../sounds/horse_running.mp3"
         },
         {
             "ID": "tumbleweed", #Luodaan tunnus jos halutaan että tapahtumalla on enemmän kuin yksi lopputulos
             "image": "../images/tumbleweed.webp",
-            "terminaltext": "how it all began...",
+            "terminaltext": "How it all began...",
             "text": "You, a blacksmith, lost everything to bandits. Armed with your father’s revolver, you saved a rancher, earning a horse and boots. Training hard, you became a cowboy and soon, a Wild West legend.",
         },
         {
@@ -247,7 +247,7 @@ def events(username):
 
     if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa
         if situation > 70: #kuolamatapaus
-            response["text"] = f"you wander through the dusty trails of the Wild West, you suddenly feel a sharp pain in your ankle. Looking down, you see a rattlesnake slithering away, its tail still buzzing."
+            response["text"] = f"You wander through the dusty trails of the Wild West, you suddenly feel a sharp pain in your ankle. Looking down, you see a rattlesnake slithering away, its tail still buzzing."
             response["terminaltext"] = "Death"
             playerList[username].death()
         else:
@@ -256,6 +256,7 @@ def events(username):
     elif response.get("ID") == "indians": #tunnuksen avulla määritellään muokattavaa tapahtumaa
         if situation > 50 and playerList[username].money >= 300: #chänssit "alt" ;) tapahtumalle
             response["text"] = f"While riding your steed through a canyon, you hear a wild yell echoing across the rocks. Natives are rushing towards you, your horse spooks and you fall down. You wake up with 300 dollars less."
+            response['terminaltext'] = f"Native Americans shook you down. You lost 300 dollars"
             playerList[username].updateMoney(-300)
         else:
             response["text"] = f"{playerList[username].name} rode slowly through the pine-studded valley, the soft clop of his horse's hooves muffled by the earth beneath. The afternoon sun bathed the landscape in a golden glow, and the air was heavy with the scent of sagebrush. Ahead, movement caught his eye. A group of riders appeared on the ridge, their silhouettes sharp against the horizon. Native Americans, their horses sleek and surefooted, moved as one with the land. They descended toward him, deliberate but unhurried, their expressions calm yet unreadable."

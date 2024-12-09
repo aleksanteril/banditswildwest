@@ -191,7 +191,6 @@ function terminalText(text) {
     const p = document.createElement('p');
     p.innerText = text;
     terminalHTML.appendChild(p)
-    console.log(terminalHTML.childElementCount);
     if (terminalHTML.childElementCount < 4) return;
     terminalHTML.removeChild(terminalHTML.firstChild);
 }
