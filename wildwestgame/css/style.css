@@ -218,6 +218,15 @@ body, html {
     transition: opacity 0.5s ease;
 }
 
+@keyframes text-fade {
+    from{opacity: 0;}
+    to{opacity: 100;}
+}
+
+.deathtext {
+    animation: text-fade 5s forwards;
+}
+
 #eventpopup {
     position: fixed;
     width: 100%;

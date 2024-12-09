@@ -148,5 +148,5 @@ def player_death():
 
 #Kysely jolla päivitetään peli takaisin alkuun ja lisätään pelaajalle 1 matkalaukku löydetty
 def reset_game_state(bandit_location):
-    sql_query_reset_game_state = (f"UPDATE game SET location = 'KAPA', total_kilometers = 0, travel_count = 0, bandit_location = '{bandit_location}', money = 10000 WHERE id = %s;")
+    sql_query_reset_game_state = (f"UPDATE game SET location = 'KAPA', total_kilometers = 0, travel_count = 0, bandit_location = '{bandit_location}' WHERE id = %s;")
     return sql_query_reset_game_state
