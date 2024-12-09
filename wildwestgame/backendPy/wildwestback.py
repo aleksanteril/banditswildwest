@@ -243,7 +243,7 @@ def events(username):
         responseJson = json.dumps(response)
         return Response(response=responseJson, status=200, mimetype="application/json")
 
-    response = random.choice(travel_events) #Satunnnainen tapahtuma
+    response = random.choice(travel_events).copy() #Satunnnainen tapahtuma
     situation = random.randint(0, 100)
 
     if response.get("ID") == "snake": #tunnuksen avulla määritellään muokattavaa tapahtumaa

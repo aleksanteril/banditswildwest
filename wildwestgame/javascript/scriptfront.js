@@ -213,6 +213,13 @@ function deathScreen() {
     gameContainer.style.background = 'none';
     gameContainer.style.backgroundImage = 'none';
     gameContainer.style.backgroundColor = 'black';
+    const p = document.createElement('p');
+    const text = document.createTextNode('You Died');
+    p.appendChild(text);
+    p.style.color = 'red';
+    p.style.fontSize = '10rem';
+    p.style.height = '45%';
+    gameContainer.appendChild(p);
 }
 
 //Ruudulle statsien päivitys
