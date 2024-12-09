@@ -92,6 +92,7 @@ class Player:
         return nameTuple[0]
 
     def death(self):
+        self.updateMoney(random.randint(0, 1000)*-1)
         self.updateDeathCount()
         query = kyselyt.reset_game_state(randomizeBandit())
         database.update(query, (self.name,))
