@@ -191,7 +191,6 @@ function terminalText(text) {
     const p = document.createElement('p');
     p.innerText = text;
     terminalHTML.appendChild(p)
-    console.log(terminalHTML.childElementCount);
     if (terminalHTML.childElementCount < 4) return;
     terminalHTML.removeChild(terminalHTML.firstChild);
 }
@@ -227,8 +226,8 @@ function gameScreenText() {
     gameScreenDayCount.innerHTML = `Deaths: ${playerDeathCount}`;
 }
 
-async function eventRequest(){
-    const response = await fetch ('http://127.0.0.1:3000/events');
+async function eventRequest(username){
+    const response = await fetch (`http://127.0.0.1:3000/events/${username}`);
     const event = await response.json();
     eventPopupOpen(event.image, event.text);
     playEventSound(event.audio);
@@ -247,13 +246,14 @@ async function markerCLick(town, marker) {
     marker.setIcon(greenIcon)
     terminalText(`You have traveled to ${town[2]}`)
     playerLocationName = town[2];
+    playerLocation = town[3]
     await map.flyTo([town[0], town[1]], 6.5);  //Matkustetaan paikkaan
-    await fetch(`http://127.0.0.1:3000/playermove/${town[3]}`); //päivitetaan sijainti backend
-    if (await eventRequest()) { //Kuolema true
+    await fetch(`http://127.0.0.1:3000/playermove/${town[3]}/${playerName}`); //päivitetaan sijainti backend
+    if (await eventRequest(playerName)) { //Kuolema true
         deathScreen()
         return;
     }
-    await getStats(); //Päivitetään statsit ja sää ruudulle
+    await getStats(playerName); //Päivitetään statsit ja sää ruudulle
     const background = await getBackground(town[2])
     await getWeather(background);
 }
@@ -278,8 +278,8 @@ async function getLocations(first=true) {
 }
 
 //Haetaan statsit ja päivitetään ne ruudulle
-async function getStats() {
-    const response = await fetch(`http://127.0.0.1:3000/getstats`);
+async function getStats(username) {
+    const response = await fetch(`http://127.0.0.1:3000/getstats/${username}`);
     const jsonData = await response.json();
     playerName = jsonData.name;
     playerLocation = jsonData.location;
@@ -295,7 +295,7 @@ async function gameBegin(evt) {
     evt.preventDefault();
     const username = document.querySelector('#username').value;
     await fetch(`http://127.0.0.1:3000/play/${username}`);
-    await getStats(); //Haetaan statsit ja asetetaan ne näkyviin
+    await getStats(username); //Haetaan statsit ja asetetaan ne näkyviin
     await getWeather(); //Haetaan sää pelin alustusta varten
     getLocations(); //Ladataan pelin kartta ja markkerit
     loginScreen.style.display = 'none';
