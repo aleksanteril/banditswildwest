@@ -251,6 +251,7 @@ def events(username):
         if situation > 70: #kuolamatapaus
             response["text"] = f"You wander through the dusty trails of the Wild West, you suddenly feel a sharp pain in your ankle. Looking down, you see a rattlesnake slithering away, its tail still buzzing."
             response["terminaltext"] = "Death"
+            response["audio"] = "../sounds/snake.mp3"
             playerList[username].death()
         else:
             response["text"] = f"{playerList[username].name} reined his horse to a halt, the sharp buzz of a rattler breaking the trail’s quiet. The snake laid in a roll on the path, its tail flicking a clear warning. Well, the roads yours, friend, {playerList[username].name} muttered, tipping his hat. With a gentle tug, he guided his horse wide, giving the rattler its space before trotting on down the trail."
